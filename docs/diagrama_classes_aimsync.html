@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AimSync - Diagrama de Classes (UML)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .diagram-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .class-box {
+            border: 2px solid;
+            border-radius: 8px;
+            min-width: 260px;
+            max-width: 310px;
+            box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        .class-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        .class-attrs,
+        .class-methods {
+            padding: 8px 14px;
+            font-size: 13px;
+            line-height: 1.7;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        .class-attrs {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        /* COLORS */
+        .usuario {
+            border-color: #6c8ebf;
+        }
+
+        .usuario .class-title {
+            background: #dae8fc;
+        }
+
+        .cliente {
+            border-color: #82b366;
+        }
+
+        .cliente .class-title {
+            background: #d5e8d4;
+        }
+
+        .produto {
+            border-color: #d6b656;
+        }
+
+        .produto .class-title {
+            background: #fff2cc;
+        }
+
+        .venda {
+            border-color: #9673a6;
+        }
+
+        .venda .class-title {
+            background: #e1d5e7;
+        }
+
+        .itemvenda {
+            border-color: #b85450;
+        }
+
+        .itemvenda .class-title {
+            background: #f8cecc;
+        }
+
+        /* RELATIONSHIPS */
+        .relationships {
+            position: relative;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        svg.relations {
+            width: 100%;
+            height: 300px;
+        }
+
+        .rel-label {
+            font-style: italic;
+            font-size: 13px;
+            fill: #555;
+        }
+
+        .rel-mult {
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Legend */
+        .legend {
+            border: 1px solid #999;
+            border-radius: 8px;
+            padding: 12px 16px;
+            background: #f9f9f9;
+            font-size: 12px;
+            line-height: 1.8;
+            position: absolute;
+            right: 0;
+            top: 0;
+            box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend b {
+            font-size: 14px;
+        }
+
+        .instructions {
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px;
+            background: #f0f7ff;
+            border: 1px solid #b3d4fc;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        @media print {
+            .instructions {
+                display: none;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="diagram-container">
+        <div class="title">AimSync — Diagrama de Classes (UML)</div>
+
+        <div class="row" id="top-row">
+            <div class="class-box usuario" id="usuario">
+                <div class="class-title">Usuario</div>
+                <div class="class-attrs">
+                    - id: int<br>
+                    - username: String<br>
+                    - senha_hash: String<br>
+                    - perfil: String
+                </div>
+                <div class="class-methods">
+                    + login(username, senha): Token<br>
+                    + validarPermissao(perfil): bool
+                </div>
+            </div>
+
+            <div class="class-box cliente" id="cliente">
+                <div class="class-title">Cliente</div>
+                <div class="class-attrs">
+                    - id: int<br>
+                    - nome: String<br>
+                    - cpf: String<br>
+                    - email: String<br>
+                    - telefone: String<br>
+                    - endereco: String
+                </div>
+                <div class="class-methods">
+                    + validarCpf(): bool<br>
+                    + validarEmail(): bool<br>
+                    + possuiVendas(): bool
+                </div>
+            </div>
+
+            <div class="class-box produto" id="produto">
+                <div class="class-title">Produto</div>
+                <div class="class-attrs">
+                    - id: int<br>
+                    - nome: String<br>
+                    - descricao: String<br>
+                    - preco: float<br>
+                    - quantidade_estoque: int
+                </div>
+                <div class="class-methods">
+                    + verificarEstoque(qtd): bool<br>
+                    + atualizarEstoque(qtd): void<br>
+                    + validarPreco(): bool
+                </div>
+            </div>
+        </div>
+
+        <svg class="relations" viewBox="0 0 1300 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arrowOpen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polyline points="0 0, 10 3.5, 0 7" fill="none" stroke="#666" stroke-width="1.5" />
+                </marker>
+                <marker id="diamond" markerWidth="14" markerHeight="10" refX="0" refY="5" orient="auto">
+                    <polygon points="0 5, 7 0, 14 5, 7 10" fill="#9673a6" stroke="#9673a6" stroke-width="1" />
+                </marker>
+            </defs>
+
+            <line x1="180" y1="0" x2="380" y2="190" stroke="#6c8ebf" stroke-width="2.5" marker-end="url(#arrowOpen)" />
+            <text x="230" y="85" class="rel-label" fill="#6c8ebf">registra</text>
+            <text x="165" y="18" class="rel-mult" fill="#6c8ebf">1</text>
+            <text x="365" y="185" class="rel-mult" fill="#6c8ebf">0..*</text>
+
+            <line x1="540" y1="0" x2="480" y2="190" stroke="#82b366" stroke-width="2.5" marker-end="url(#arrowOpen)" />
+            <text x="530" y="85" class="rel-label" fill="#82b366">realiza</text>
+            <text x="545" y="18" class="rel-mult" fill="#82b366">1</text>
+            <text x="460" y="185" class="rel-mult" fill="#82b366">0..*</text>
+
+            <line x1="600" y1="195" x2="830" y2="195" stroke="#9673a6" stroke-width="2.5" marker-start="url(#diamond)"
+                marker-end="url(#arrowOpen)" />
+            <text x="690" y="188" class="rel-label" fill="#9673a6">contém</text>
+            <text x="615" y="188" class="rel-mult" fill="#9673a6">1</text>
+            <text x="810" y="188" class="rel-mult" fill="#9673a6">1..*</text>
+
+            <line x1="920" y1="0" x2="920" y2="190" stroke="#d6b656" stroke-width="2.5" marker-end="url(#arrowOpen)" />
+            <text x="930" y="95" class="rel-label" fill="#d6b656">compõe</text>
+            <text x="925" y="18" class="rel-mult" fill="#d6b656">1</text>
+            <text x="925" y="185" class="rel-mult" fill="#d6b656">0..*</text>
+        </svg>
+
+        <div class="row" id="bottom-row">
+            <div class="class-box venda" id="venda">
+                <div class="class-title">Venda</div>
+                <div class="class-attrs">
+                    - id: int<br>
+                    - data: Date<br>
+                    - valor_total: float
+                </div>
+                <div class="class-methods">
+                    + calcularTotal(): float<br>
+                    + registrarVenda(): void<br>
+                    + validarItens(): bool
+                </div>
+            </div>
+
+            <div class="class-box itemvenda" id="itemvenda">
+                <div class="class-title">ItemVenda</div>
+                <div class="class-attrs">
+                    - id: int<br>
+                    - quantidade: int<br>
+                    - valor_unitario: float
+                </div>
+                <div class="class-methods">
+                    + calcularSubtotal(): float
+                </div>
+            </div>
+        </div>
+
+        <div style="position:relative; margin-top:20px;">
+            <div class="legend">
+                <b>Legenda</b><br>
+                <code>-</code> &nbsp;atributo privado<br>
+                <code>+</code> &nbsp;método público<br>
+                <span style="color:#9673a6;">◆──</span> composição<br>
+                <span style="color:#666;">──▷</span> associação<br>
+                1 / 0..* / 1..* &nbsp;multiplicidade
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

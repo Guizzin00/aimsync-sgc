@@ -33,12 +33,16 @@ projeto/
     └── script_criacao.sql
 ```
 
+## Documentação
+
+- [📄 Documento de Entrega 1 (Google Docs)](https://docs.google.com/document/d/1ignLpRMEzUtgRwZCkQrccoYJ-siLkP5eiaNFfkjMW6E/edit?usp=sharing)
+- [📊 Diagrama de Classes UML (PDF)](docs/AimSync%20-%20Diagrama%20de%20Classes%20(UML).pdf)
+- [📊 Diagrama Lógico do Banco de Dados (PDF)](docs/AimSync%20-%20Diagrama%20L%C3%B3gico%20do%20Banco%20de%20Dados.pdf)
+
 ## Como Executar
 
 _(Instruções serão adicionadas nas próximas entregas)_
 
 ## Equipe
 
-- Aluno 1
-- Aluno 2
-- Aluno 3
+- Guilherme Oliveira
