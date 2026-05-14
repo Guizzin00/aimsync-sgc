@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ponto de Venda - AimSync SGC</title>
+    <link rel="icon" type="image/jpeg" href="img/logo_dark.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+            <div class="sidebar-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 24px; cursor: pointer;">
+                <img src="img/logo_dark.jpg" alt="Logo" class="logo-img" style="width: 40px; height: 40px; border-radius: 50%;">
+                <span>AimSync</span>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+            <li><a href="produtos.html">Produtos / Estoque</a></li>
+            <li><a href="vendas.html" class="active">Ponto de Venda</a></li>
+            <li><a href="relatorios.html">Relatório de Vendas</a></li>
+            <li><a href="notas_fiscais.html">Nota Fiscal</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="btn btn-outline" style="width: 100%; border-color: var(--danger-color); color: var(--danger-color);">Sair do Sistema</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-bottom: 0;">
+        <div class="page-header" style="margin-bottom: 16px;">
+            <h1>Ponto de Venda (PDV)</h1>
+        </div>
+        
+        <div id="alertContainer" class="hidden"></div>
+
+        <div class="pdv-layout">
+            
+            <!-- Left Side: Products Selection -->
+            <div class="products-section">
+                <!-- Products Grid Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <input type="text" id="searchProduct" class="form-control" placeholder="🔍 Nome ou código..." style="max-width: 300px; border-radius: 8px;">
+                </div>
+                
+                <!-- Box Separada para Cliente -->
+                <div style="margin-bottom: 16px; padding: 16px; border: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.2); border-radius: 8px;">
+                    <label for="clienteSelect" style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500;">Cliente da Venda</label>
+                    <select id="clienteSelect" class="form-control" style="font-size: 1rem; border: 1px solid var(--accent-color); cursor: pointer; max-width: 300px;">
+                        <option value="">Selecione um cliente...</option>
+                    </select>
+                </div>
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be generated here by JS -->
+                </div>
+            </div>
+
+            <!-- Right Side: Cart -->
+            <div class="cart-section">
+                <div class="cart-header" style="padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="margin: 0; font-size: 1.2rem;">🛒 Carrinho</h2>
+                </div>
+                
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items will be generated here -->
+                    <div id="emptyCartMessage" style="text-align: center; color: var(--text-secondary); margin-top: 40px;">
+                        Nenhum produto adicionado.
+                    </div>
+                </div>
+
+                <div class="cart-summary">
+                    <div class="flex justify-between" style="color: var(--text-secondary); margin-bottom: 12px;">
+                        <span><span id="totalItems">0</span> Itens</span>
+                        <span style="font-weight: 500;">Subtotal: R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between items-center" style="margin-top: 16px; margin-bottom: 24px;">
+                        <span style="font-size: 1.2rem; font-weight: 600;">Total:</span>
+                        <span id="totalValue" style="font-size: 1.8rem; font-weight: 700; color: var(--text-primary);">R$ 0,00</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px;">
+                        <button type="button" id="btnClearCart" class="btn btn-outline" style="padding: 16px; border-radius: 8px; font-size: 1.2rem; color: var(--text-secondary);" title="Limpar Carrinho" onclick="clearCart()">
+                            🗑️
+                        </button>
+                        <button type="button" id="btnFinalizar" class="btn" style="flex: 1; padding: 16px; font-size: 1.1rem; font-weight: 600; background-color: var(--success-color); color: white; border-radius: 8px;" disabled>
+                            Ir para pagamento >
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/api.js"></script>
+    <script src="js/vendas.js"></script>
+</body>
+</html>

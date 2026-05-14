@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - AimSync SGC</title>
+    <link rel="icon" type="image/jpeg" href="img/logo_dark.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+            <div class="sidebar-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 24px; cursor: pointer;">
+                <img src="img/logo_dark.jpg" alt="Logo" class="logo-img" style="width: 40px; height: 40px; border-radius: 50%;">
+                <span>AimSync</span>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+            <li><a href="produtos.html">Produtos / Estoque</a></li>
+            <li><a href="vendas.html">Ponto de Venda</a></li>
+            <li><a href="relatorios.html" class="active">Relatório de Vendas</a></li>
+            <li><a href="notas_fiscais.html">Nota Fiscal</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="btn btn-outline" style="width: 100%; border-color: var(--danger-color); color: var(--danger-color);">Sair do Sistema</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Relatório de Vendas</h1>
+        </div>
+        
+        <div id="alertContainer" class="hidden"></div>
+
+        <!-- Filters -->
+        <div class="card" style="margin-bottom: 24px;">
+            <form id="filterForm" class="filter-grid">
+                <div class="form-group" style="margin: 0;">
+                    <label for="data_inicio">Data Início</label>
+                    <input type="date" id="data_inicio" class="form-control">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label for="data_fim">Data Fim</label>
+                    <input type="date" id="data_fim" class="form-control">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label for="cliente_id">Cliente</label>
+                    <select id="cliente_id" class="form-control">
+                        <option value="">Todos os clientes</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="height: 42px;">Filtrar</button>
+            </form>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="stats-grid" style="margin-bottom: 24px;">
+            <div class="stat-card">
+                <h3 class="stat-title">Total de Vendas</h3>
+                <div class="stat-value" id="kpiQtdVendas">0</div>
+            </div>
+            <div class="stat-card">
+                <h3 class="stat-title">Faturamento Total</h3>
+                <div class="stat-value" id="kpiValorTotal" style="color: var(--success-color);">R$ 0,00</div>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="card table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Cliente</th>
+                        <th>Vendedor</th>
+                        <th>Itens</th>
+                        <th>Pagamento</th>
+                        <th>Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: var(--text-secondary);">Nenhuma venda encontrada para os filtros selecionados.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/api.js"></script>
+    <script src="js/relatorios.js"></script>
+</body>
+</html>
