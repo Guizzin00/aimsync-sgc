@@ -20,47 +20,49 @@ class ApiService {
 
   static async handleResponse(response) {
     if (response.status === 401) {
-      // Token expired or invalid
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      
       if (typeof Swal !== 'undefined') {
           Swal.fire({
               title: 'Sessão Expirada',
               text: 'Sua sessão expirou por segurança. Faça login novamente.',
               icon: 'warning',
               confirmButtonColor: '#a855f7'
-          }).then(() => {
-              window.location.href = 'index.html';
-          });
+          }).then(() => window.location.href = 'index.html');
       } else {
-          alert('Sessão expirada. Faça login novamente.');
           window.location.href = 'index.html';
       }
-      throw new Error('Sessão expirada. Faça login novamente.');
+      throw new Error('SILENT_ERROR');
+    }
+
+    if (response.status === 403 || response.status === 500) {
+      const is403 = response.status === 403;
+      if (typeof Swal !== 'undefined') {
+          Swal.fire({
+              title: is403 ? 'Acesso Negado!' : 'Erro no Servidor!',
+              text: is403 ? 'Você não tem permissão para realizar esta ação.' : 'Poxa, nossos servidores tropeçaram! Tente novamente mais tarde.',
+              imageUrl: `gif/${response.status}.gif`,
+              imageWidth: 300,
+              imageHeight: 200,
+              imageAlt: `Erro ${response.status}`,
+              confirmButtonColor: '#a855f7'
+          });
+      }
+      throw new Error('SILENT_ERROR');
     }
 
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
       let errorMsg = data.detail || data.non_field_errors?.[0];
-      
       if (!errorMsg) {
-        // Se não houver detail, pode ser erro de validação em campos específicos (ex: username já existe)
         const fieldErrors = Object.entries(data)
           .filter(([key, val]) => Array.isArray(val))
           .map(([key, val]) => `${key}: ${val.join(' ')}`);
-        
-        if (fieldErrors.length > 0) {
-          errorMsg = fieldErrors.join(' | ');
-        } else {
-          errorMsg = 'Ocorreu um erro na requisição.';
-        }
+        errorMsg = fieldErrors.length > 0 ? fieldErrors.join(' | ') : 'Ocorreu um erro na requisição.';
       }
-      
       throw new Error(errorMsg);
     }
-
     return data;
   }
 

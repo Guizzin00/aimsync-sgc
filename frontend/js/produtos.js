@@ -40,6 +40,7 @@ async function loadProdutos() {
         currentProdutos = produtos;
         renderTable();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
         tableBody.innerHTML = `<tr><td colspan="4" class="text-danger text-center">Erro ao carregar produtos.</td></tr>`;
     }
@@ -122,6 +123,7 @@ async function deleteProduto(id) {
         showAlert('Produto excluído com sucesso.');
         loadProdutos();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
     }
 }
@@ -156,6 +158,7 @@ form.addEventListener('submit', async (e) => {
         closeModal();
         loadProdutos();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
     } finally {
         submitBtn.disabled = false;

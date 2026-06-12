@@ -76,6 +76,7 @@ async function loadClientes() {
         currentClientes = clientes;
         renderTable();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
         tableBody.innerHTML = `<tr><td colspan="5" class="text-danger text-center">Erro ao carregar clientes.</td></tr>`;
     }
@@ -144,6 +145,7 @@ async function deleteCliente(id) {
         showAlert('Cliente excluído com sucesso.');
         loadClientes();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
     }
 }
@@ -179,6 +181,7 @@ form.addEventListener('submit', async (e) => {
         closeModal();
         loadClientes();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
     } finally {
         submitBtn.disabled = false;

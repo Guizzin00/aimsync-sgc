@@ -41,6 +41,7 @@ async function loadDependencies() {
         populateClientes();
         renderProducts();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert('Erro ao carregar dados: ' + error.message, 'error');
     }
 }
@@ -349,6 +350,7 @@ async function finalizarVenda(event) {
         });
 
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert('Erro ao processar venda: ' + error.message, 'error');
         btnFinalizar.textContent = 'Ir para pagamento >';
         btnFinalizar.disabled = false;

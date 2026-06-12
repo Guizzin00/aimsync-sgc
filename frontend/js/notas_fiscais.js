@@ -28,6 +28,7 @@ async function loadClientes() {
             clienteSelect.appendChild(option);
         });
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         console.error('Erro ao carregar clientes:', error);
     }
 }
@@ -49,6 +50,7 @@ async function loadVendas() {
         currentVendas = data.vendas;
         renderTable(currentVendas);
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
         tableBody.innerHTML = `<tr><td colspan="5" class="text-danger text-center">Erro ao carregar vendas.</td></tr>`;
     }

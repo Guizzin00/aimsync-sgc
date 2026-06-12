@@ -22,6 +22,7 @@ async function loadUsuarios() {
         usuarios = data;
         renderTable();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         Swal.fire('Erro', 'Não foi possível carregar a equipe: ' + error.message, 'error');
     }
 }
@@ -107,6 +108,7 @@ usuarioForm.addEventListener('submit', async (e) => {
         closeModal();
         loadUsuarios();
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         Swal.fire('Erro', error.message || 'Erro ao salvar usuário.', 'error');
     }
 });

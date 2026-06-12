@@ -30,6 +30,14 @@
     {
       "src": "/(.*)",
       "dest": "/frontend/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/frontend/404.html"
     }
   ]
 }

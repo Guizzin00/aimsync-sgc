@@ -12,6 +12,7 @@ async function loadDashboardData() {
 
         buildCharts(data.vendas);
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         console.error('Erro ao carregar dashboard', error);
     }
 }

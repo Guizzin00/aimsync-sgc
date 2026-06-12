@@ -28,6 +28,7 @@ async function loadClientes() {
             clienteSelect.appendChild(option);
         });
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         console.error('Erro ao carregar clientes para o filtro:', error);
     }
 }
@@ -52,6 +53,7 @@ async function loadRelatorio() {
 
         renderTable(data.vendas);
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         showAlert(error.message, 'error');
         tableBody.innerHTML = `<tr><td colspan="7" class="text-danger text-center">Erro ao gerar relatório.</td></tr>`;
     }

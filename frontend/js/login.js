@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Redirect
             window.location.href = 'dashboard.html';
         } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
             showAlert('Usuário ou senha incorretos.');
             submitBtn.disabled = false;
             submitBtn.textContent = 'Entrar no Sistema';
@@ -78,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     return response;
                 } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
                     Swal.showValidationMessage(
                         `Erro: ${error.message || 'Link inválido ou expirado.'}`
                     );
@@ -118,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const response = await ApiService.post('/auth/password-reset/', { email: email });
                         return response;
                     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
                         Swal.showValidationMessage(
                             `Erro: ${error.message || 'Erro ao processar a solicitação.'}`
                         );
@@ -162,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmButtonColor: '#a855f7'
                     });
                 } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
                     Swal.fire({
                         icon: 'error',
                         title: 'Erro!',
@@ -227,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     formTitle.textContent = 'Sign In';
                 });
             } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
                 showAlert(error.message || 'Erro ao cadastrar.');
             } finally {
                 submitBtn.disabled = false;

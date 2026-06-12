@@ -24,6 +24,7 @@ async function loadConfiguracao() {
             document.getElementById('mensagem_rodape').value = config.mensagem_rodape || '';
         }
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         Swal.fire('Erro', 'Não foi possível carregar as configurações.', 'error');
     }
 }
@@ -58,6 +59,7 @@ configForm.addEventListener('submit', async (e) => {
         
         setTimeout(() => { saveStatus.textContent = ''; }, 3000);
     } catch (error) {
+        if (error.message === 'SILENT_ERROR') return;
         Swal.fire('Erro', error.message || 'Erro ao salvar configurações.', 'error');
     } finally {
         btnSaveConfig.disabled = false;
