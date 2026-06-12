@@ -137,3 +137,13 @@ function formatDate(dateString) {
     minute: '2-digit'
   }).format(new Date(dateString));
 }
+
+// --- Controle de Acesso (RBAC) ---
+document.addEventListener('DOMContentLoaded', () => {
+  const perfil = localStorage.getItem('perfil');
+  if (perfil !== 'ADMIN') {
+    const style = document.createElement('style');
+    style.innerHTML = '[data-admin-only] { display: none !important; }';
+    document.head.appendChild(style);
+  }
+});

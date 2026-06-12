@@ -68,7 +68,7 @@ function renderTable() {
             <td>
                 <div class="flex gap-2">
                     <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" onclick="editProduto(${produto.id})">Editar</button>
-                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteProduto(${produto.id})">Excluir</button>
+                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" data-admin-only onclick="deleteProduto(${produto.id})">Excluir</button>
                 </div>
             </td>
         `;

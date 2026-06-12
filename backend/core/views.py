@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status, permissions, mixins
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -8,11 +8,17 @@ from .models import Cliente, Produto, Venda
 from .serializers import ClienteSerializer, ProdutoSerializer, VendaSerializer, VendaCreateSerializer
 from .services import VendaService
 from .exceptions import BusinessException
+from .permissions import IsAdmin
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'destroy':
+            return [IsAdmin()]
+        return super().get_permissions()
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -25,16 +31,26 @@ class ProdutoViewSet(viewsets.ModelViewSet):
     serializer_class = ProdutoSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action == 'destroy':
+            return [IsAdmin()]
+        return super().get_permissions()
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         if instance.itens_venda.exists():
             raise BusinessException("Não é possível excluir um produto que possui vendas registradas.")
         return super().destroy(request, *args, **kwargs)
 
-class VendaViewSet(viewsets.ReadOnlyModelViewSet):
+class VendaViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Venda.objects.all().order_by('-data')
     serializer_class = VendaSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'destroy':
+            return [IsAdmin()]
+        return super().get_permissions()
 
     def create(self, request, *args, **kwargs):
         serializer = VendaCreateSerializer(data=request.data)
@@ -55,7 +71,7 @@ class VendaViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(VendaSerializer(venda).data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsAdmin])
 def relatorio_vendas(request):
     data_inicio = request.query_params.get('data_inicio')
     data_fim = request.query_params.get('data_fim')

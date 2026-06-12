@@ -100,7 +100,7 @@ function renderTable() {
             <td>
                 <div class="flex gap-2">
                     <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" onclick="editCliente(${cliente.id})">Editar</button>
-                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteCliente(${cliente.id})">Excluir</button>
+                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" data-admin-only onclick="deleteCliente(${cliente.id})">Excluir</button>
                 </div>
             </td>
         `;

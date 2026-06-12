@@ -54,6 +54,26 @@ class VendaService:
 
             valor_total += (produto.preco * quantidade)
 
+            # --- Alerta de Estoque ---
+            if produto.quantidade_estoque <= produto.estoque_minimo:
+                from django.contrib.auth import get_user_model
+                from django.core.mail import send_mail
+                User = get_user_model()
+                admins = User.objects.filter(perfil='ADMIN', email__isnull=False).values_list('email', flat=True)
+                if admins:
+                    subject = f'Alerta de Estoque Baixo: {produto.nome}'
+                    message = f'O produto "{produto.nome}" atingiu o limite mínimo de estoque.\n\nRestam apenas {produto.quantidade_estoque} unidades no sistema.\n\nFavor providenciar reposição.'
+                    try:
+                        send_mail(
+                            subject,
+                            message,
+                            'noreply@aimsync.com',
+                            list(admins),
+                            fail_silently=True
+                        )
+                    except Exception:
+                        pass
+
         venda.valor_total = valor_total
         venda.save()
 

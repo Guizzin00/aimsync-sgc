@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save tokens
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
+            if (data.perfil) localStorage.setItem('perfil', data.perfil);
+            if (data.username) localStorage.setItem('username', data.username);
             
             // Redirect
             window.location.href = 'dashboard.html';

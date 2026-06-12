@@ -1,5 +1,13 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Usuario, Cliente, Produto, Venda, ItemVenda
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['perfil'] = self.user.perfil
+        data['username'] = self.user.username
+        return data
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
