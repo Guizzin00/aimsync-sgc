@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const perfil = localStorage.getItem('perfil');
   
   // Bloqueio de URL (Redirecionamento)
-  if (window.location.pathname.includes('relatorios.html') && perfil !== 'ADMIN') {
+  if (window.location.pathname.includes('relatorios.html') && perfil !== 'DONO') {
     window.location.replace('dashboard.html');
   }
 });

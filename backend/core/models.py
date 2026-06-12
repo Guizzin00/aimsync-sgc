@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Usuario(AbstractUser):
     PERFIL_CHOICES = (
-        ('ADMIN', 'Administrador'),
+        ('DONO', 'Dono da Loja'),
         ('FUNCIONARIO', 'Funcionário'),
     )
     perfil = models.CharField(max_length=50, choices=PERFIL_CHOICES, default='FUNCIONARIO')

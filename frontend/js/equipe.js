@@ -39,7 +39,7 @@ function renderTable() {
             <td>${u.id}</td>
             <td><strong>${u.username}</strong></td>
             <td>${u.email}</td>
-            <td>${u.perfil === 'ADMIN' ? '👑 Admin' : 'Atendente'}</td>
+            <td>${u.perfil === 'DONO' ? '👑 Dono' : 'Atendente'}</td>
             <td><span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: var(--${u.is_active ? 'success' : 'danger'}-color); color: white;">${badgeText}</span></td>
             <td>
                 <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="editUsuario(${u.id})">✏️ Editar</button>

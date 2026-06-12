@@ -12,7 +12,7 @@
             const theme = localStorage.getItem('theme') || 'dark';
             if (theme === 'light') document.documentElement.classList.add('light-theme');
             const perfil = localStorage.getItem('perfil');
-            if (perfil === 'ADMIN') document.documentElement.classList.add('is-admin');
+            if (perfil === 'DONO') document.documentElement.classList.add('is-admin');
         })();
     </script>
 </head>
@@ -89,7 +89,7 @@
                     <label>Perfil de Acesso *</label>
                     <select id="perfil" class="form-control" required>
                         <option value="FUNCIONARIO">Atendente (PDV e Clientes)</option>
-                        <option value="ADMIN">Administrador (Acesso Total)</option>
+                        <option value="DONO">Dono da Loja (Acesso Total)</option>
                     </select>
                 </div>
                 <div class="form-group">
