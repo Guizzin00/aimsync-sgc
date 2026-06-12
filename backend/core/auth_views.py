@@ -31,14 +31,17 @@ class PasswordResetRequestView(APIView):
         
         email_body = f"Olá, {user.first_name or user.username}!\n\nVocê solicitou a redefinição de senha para o AimSync SGC.\n\nPor favor, copie e cole o link abaixo no seu navegador para criar uma nova senha:\n{reset_link}\n\nSe você não solicitou isso, pode ignorar este e-mail."
         
-        send_mail(
-            subject='Redefinição de Senha - AimSync SGC',
-            message=email_body,
-            from_email='noreply@aimsync.com',
-            recipient_list=[user.email],
-            fail_silently=False,
-        )
-        
+        try:
+            send_mail(
+                subject='Redefinição de Senha - AimSync SGC',
+                message=email_body,
+                from_email='noreply@aimsync.com',
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            return Response({'detail': f'Erro ao enviar e-mail: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response({'message': 'Se o e-mail existir no nosso sistema, um link de redefinição será enviado.'}, status=status.HTTP_200_OK)
 
 class PasswordResetConfirmView(APIView):
@@ -82,15 +85,19 @@ class UserRegistrationView(APIView):
             
             email_body = f"Olá, {user.username}!\n\nObrigado por se cadastrar no AimSync SGC.\n\nPor favor, confirme seu e-mail clicando no link abaixo:\n{verify_link}\n\nCaso não tenha sido você, ignore este e-mail."
             
-            send_mail(
-                subject='Confirme seu E-mail - AimSync SGC',
-                message=email_body,
-                from_email='noreply@aimsync.com',
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-            
-            return Response({'message': 'Usuário criado com sucesso. Verifique seu e-mail para ativar a conta.'}, status=status.HTTP_201_CREATED)
+            try:
+                send_mail(
+                    subject='Confirme seu E-mail - AimSync SGC',
+                    message=email_body,
+                    from_email='noreply@aimsync.com',
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                )
+                return Response({'message': 'Usuário criado com sucesso. Verifique seu e-mail para ativar a conta.'}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                user.delete()  # Deleta o usuário criado para ele poder tentar de novo
+                return Response({'detail': f'Erro ao enviar e-mail: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EmailVerificationView(APIView):
