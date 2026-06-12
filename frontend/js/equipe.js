@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!ApiService.getToken()) window.location.href = 'index.html';
     
     // Proteção Front-end Extra
-    if (localStorage.getItem('perfil') !== 'ADMIN') {
+    if (localStorage.getItem('perfil') !== 'DONO') {
         window.location.replace('dashboard.html');
     }
 
