@@ -30,7 +30,12 @@ function buildCharts(vendas) {
     const dates = Object.keys(salesByDate).slice(-7); // Last 7 days with sales
     const values = dates.map(d => salesByDate[d]);
 
-    new Chart(document.getElementById('salesChart'), {
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const salesGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+    salesGradient.addColorStop(0, 'rgba(139, 92, 246, 0.5)');
+    salesGradient.addColorStop(1, 'rgba(139, 92, 246, 0)');
+
+    new Chart(salesCtx, {
         type: 'line',
         data: {
             labels: dates,
@@ -38,7 +43,7 @@ function buildCharts(vendas) {
                 label: 'Faturamento (R$)',
                 data: values,
                 borderColor: '#8b5cf6',
-                backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                backgroundColor: salesGradient,
                 borderWidth: 3,
                 fill: true,
                 tension: 0.4,

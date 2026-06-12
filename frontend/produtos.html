@@ -7,6 +7,14 @@
     <link rel="icon" type="image/jpeg" href="img/logo_dark.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+<script>
+    (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+        const perfil = localStorage.getItem('perfil');
+        if (perfil === 'ADMIN') document.documentElement.classList.add('is-admin');
+    })();
+</script>
 </head>
 <body>
 
@@ -26,7 +34,8 @@
             <li data-admin-only><a href="relatorios.html">Relatório de Vendas</a></li>
             <li><a href="notas_fiscais.html">Nota Fiscal</a></li>
         </ul>
-        <div class="sidebar-footer">
+        <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 8px;">
+            <button onclick="toggleTheme()" class="btn btn-outline" style="width: 100%;">🌓 Alternar Tema</button>
             <button onclick="logout()" class="btn btn-outline" style="width: 100%; border-color: var(--danger-color); color: var(--danger-color);">Sair do Sistema</button>
         </div>
     </aside>

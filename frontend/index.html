@@ -297,6 +297,14 @@
             text-transform: uppercase;
         }
     </style>
+<script>
+    (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+        const perfil = localStorage.getItem('perfil');
+        if (perfil === 'ADMIN') document.documentElement.classList.add('is-admin');
+    })();
+</script>
 </head>
 
 <body>

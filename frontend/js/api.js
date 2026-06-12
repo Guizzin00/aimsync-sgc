@@ -155,9 +155,23 @@ function formatDate(dateString) {
 // --- Controle de Acesso (RBAC) ---
 document.addEventListener('DOMContentLoaded', () => {
   const perfil = localStorage.getItem('perfil');
-  if (perfil !== 'ADMIN') {
-    const style = document.createElement('style');
-    style.innerHTML = '[data-admin-only] { display: none !important; }';
-    document.head.appendChild(style);
+  
+  // Bloqueio de URL (Redirecionamento)
+  if (window.location.pathname.includes('relatorios.html') && perfil !== 'ADMIN') {
+    window.location.replace('dashboard.html');
   }
 });
+
+// --- Controle de Tema ---
+window.toggleTheme = function() {
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  if (newTheme === 'dark') {
+    document.documentElement.classList.add('dark-theme');
+  } else {
+    document.documentElement.classList.remove('dark-theme');
+  }
+  
+  localStorage.setItem('theme', newTheme);
+};

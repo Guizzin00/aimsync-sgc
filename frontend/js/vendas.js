@@ -107,6 +107,36 @@ searchInput.addEventListener('input', (e) => {
     renderProducts(e.target.value);
 });
 
+// Comportamento de Leitor de Código de Barras
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const filterText = e.target.value.toLowerCase();
+        if (!filterText) return;
+        
+        const filteredProdutos = produtos.filter(p => 
+            p.nome.toLowerCase().includes(filterText) || 
+            (p.codigo_barras && p.codigo_barras === filterText) // caso adicione depois
+        );
+
+        if (filteredProdutos.length === 1) {
+            // Se encontrou exatamente 1 produto, bipa e adiciona ao carrinho
+            const p = filteredProdutos[0];
+            const cartItem = carrinho.find(c => c.produto_id === p.id);
+            const qtyInCart = cartItem ? cartItem.quantidade : 0;
+            const availableStock = p.quantidade_estoque - qtyInCart;
+            
+            if (availableStock > 0) {
+                addProductToCart(p.id);
+                searchInput.value = '';
+                renderProducts('');
+            } else {
+                showAlert('Estoque insuficiente para este item!', 'error');
+            }
+        }
+    }
+});
+
 function addProductToCart(produtoId) {
     const produto = produtos.find(p => p.id === produtoId);
     if (!produto) return;

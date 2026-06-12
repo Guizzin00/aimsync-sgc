@@ -1,5 +1,21 @@
 :root {
-  /* Colors */
+  /* Colors (Light Theme by default) */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --accent-color: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --danger-color: #ef4444;
+  --success-color: #10b981;
+  --border-color: #e2e8f0;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  
+  /* Fonts */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html.dark-theme {
   --bg-primary: #0a0514;
   --bg-secondary: #140b2e;
   --text-primary: #f8fafc;
@@ -10,9 +26,19 @@
   --success-color: #10b981;
   --border-color: #3b0764;
   --glass-bg: rgba(20, 11, 46, 0.8);
-  
-  /* Fonts */
-  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* FOUC and Security */
+[data-admin-only] {
+  display: none !important;
+}
+
+html.is-admin [data-admin-only] {
+  display: inherit !important;
+}
+
+html.is-admin li[data-admin-only] {
+  display: block !important; /* Specific for sidebar lists */
 }
 
 * {
