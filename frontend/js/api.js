@@ -45,7 +45,9 @@ class ApiService {
               imageWidth: 300,
               imageHeight: 200,
               imageAlt: `Erro ${response.status}`,
-              confirmButtonColor: '#a855f7'
+              confirmButtonColor: '#a855f7',
+              background: '#ffffff',
+              color: '#000000'
           });
       }
       throw new Error('SILENT_ERROR');
