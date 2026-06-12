@@ -4,11 +4,41 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Sum
 
-from .models import Cliente, Produto, Venda
-from .serializers import ClienteSerializer, ProdutoSerializer, VendaSerializer, VendaCreateSerializer
+from .models import Cliente, Produto, Venda, Usuario, ConfiguracaoLoja
+from .serializers import ClienteSerializer, ProdutoSerializer, VendaSerializer, VendaCreateSerializer, UsuarioSerializer, ConfiguracaoLojaSerializer
 from .services import VendaService
 from .exceptions import BusinessException
 from .permissions import IsAdmin
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Usuario.objects.all().order_by('username')
+    serializer_class = UsuarioSerializer
+    permission_classes = [IsAuthenticated, IsAdmin]
+    
+    def destroy(self, request, *args, **kwargs):
+        # Soft delete (Desativar) em vez de excluir do banco
+        instance = self.get_object()
+        if instance == request.user:
+            raise BusinessException("Você não pode desativar seu próprio usuário logado.")
+        instance.is_active = False
+        instance.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ConfiguracaoLojaViewSet(viewsets.ModelViewSet):
+    queryset = ConfiguracaoLoja.objects.all()
+    serializer_class = ConfiguracaoLojaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdmin()]
+        return super().get_permissions()
+
+    def list(self, request, *args, **kwargs):
+        # Sempre retorna ou cria a única configuração
+        config, created = ConfiguracaoLoja.objects.get_or_create(id=1)
+        serializer = self.get_serializer(config)
+        return Response([serializer.data])
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()

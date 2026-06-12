@@ -1,10 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ClienteViewSet, ProdutoViewSet, VendaViewSet, relatorio_vendas
+from .views import ClienteViewSet, ProdutoViewSet, VendaViewSet, relatorio_vendas, UsuarioViewSet, ConfiguracaoLojaViewSet
 
 router = DefaultRouter()
 router.register(r'clientes', ClienteViewSet)
 router.register(r'produtos', ProdutoViewSet)
+router.register(r'usuarios', UsuarioViewSet)
+router.register(r'configuracoes', ConfiguracaoLojaViewSet)
 
 venda_list = VendaViewSet.as_view({
     'get': 'list',

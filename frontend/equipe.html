@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipe e Usuários - AimSync SGC</title>
+    <link rel="icon" type="image/jpeg" href="img/logo_dark.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            if (theme === 'light') document.documentElement.classList.add('light-theme');
+            const perfil = localStorage.getItem('perfil');
+            if (perfil === 'ADMIN') document.documentElement.classList.add('is-admin');
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+            <div class="sidebar-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 24px; cursor: pointer;">
+                <img src="img/logo_dark.jpg" alt="Logo" class="logo-img" style="width: 40px; height: 40px; border-radius: 50%;">
+                <span id="sidebarLojaName">AimSync</span>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+            <li><a href="produtos.html">Produtos / Estoque</a></li>
+            <li><a href="vendas.html">Ponto de Venda</a></li>
+            <li data-admin-only><a href="relatorios.html">Relatório de Vendas</a></li>
+            <li><a href="notas_fiscais.html">Nota Fiscal</a></li>
+            <li data-admin-only><a href="equipe.html" class="active">👥 Equipe / Usuários</a></li>
+            <li data-admin-only><a href="configuracoes.html">⚙️ Configurações</a></li>
+        </ul>
+        <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 8px;">
+            <button onclick="toggleTheme()" class="btn btn-outline" style="width: 100%;">🌓 Alternar Tema</button>
+            <button onclick="logout()" class="btn btn-outline" style="width: 100%; border-color: var(--danger-color); color: var(--danger-color);">Sair do Sistema</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Gestão da Equipe</h1>
+            <button class="btn btn-primary" onclick="openModal()">+ Novo Usuário</button>
+        </div>
+
+        <div class="card table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome de Usuário</th>
+                        <th>E-mail</th>
+                        <th>Perfil</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="usuariosTableBody">
+                    <!-- Gerado via JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal Form -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Usuário</h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <form id="usuarioForm">
+                <input type="hidden" id="usuarioId">
+                <div class="form-group">
+                    <label>Nome de Usuário *</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail *</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Perfil de Acesso *</label>
+                    <select id="perfil" class="form-control" required>
+                        <option value="FUNCIONARIO">Atendente (PDV e Clientes)</option>
+                        <option value="ADMIN">Administrador (Acesso Total)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Senha <small>(Deixe em branco para não alterar)</small></label>
+                    <input type="password" id="password" class="form-control" placeholder="Mínimo 6 caracteres">
+                </div>
+                
+                <div class="flex justify-between items-center mt-4" style="gap: 16px;">
+                    <div style="flex: 1;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="isActive" checked>
+                            <span style="font-size: 0.9rem;">Usuário Ativo (Pode fazer login)</span>
+                        </label>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Usuário</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/api.js"></script>
+    <script src="js/equipe.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Usuario, Cliente, Produto, Venda, ItemVenda
+from .models import Usuario, Cliente, Produto, Venda, ItemVenda, ConfiguracaoLoja
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -10,9 +10,32 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'perfil']
+        fields = ['id', 'username', 'email', 'perfil', 'is_active', 'password']
+        
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = super().create(validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
+        
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        user = super().update(instance, validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
+
+class ConfiguracaoLojaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConfiguracaoLoja
+        fields = '__all__'
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)

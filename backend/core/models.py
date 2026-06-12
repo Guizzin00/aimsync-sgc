@@ -8,6 +8,21 @@ class Usuario(AbstractUser):
     )
     perfil = models.CharField(max_length=50, choices=PERFIL_CHOICES, default='FUNCIONARIO')
 
+class ConfiguracaoLoja(models.Model):
+    nome_loja = models.CharField(max_length=255, default="AimSync SGC")
+    cnpj = models.CharField(max_length=18, blank=True, null=True)
+    mensagem_rodape = models.TextField(blank=True, null=True, default="Obrigado pela preferência!")
+    imposto_padrao = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, help_text="Porcentagem de imposto padrão")
+
+    def __str__(self):
+        return self.nome_loja
+
+    def save(self, *args, **kwargs):
+        # Garante que seja um Singleton (Apenas 1 registro na tabela)
+        if self.__class__.objects.count():
+            self.pk = self.__class__.objects.first().pk
+        super().save(*args, **kwargs)
+
 class Cliente(models.Model):
     nome = models.CharField(max_length=255)
     cpf = models.CharField(max_length=14, unique=True)
