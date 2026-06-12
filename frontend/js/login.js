@@ -127,11 +127,113 @@ document.addEventListener('DOMContentLoaded', () => {
                     Swal.fire({
                         icon: 'success',
                         title: 'E-mail Enviado!',
-                        text: 'Se o e-mail estiver cadastrado, você receberá um link de recuperação em breve. (Confira no terminal do Django!)',
+                        text: 'Se o e-mail estiver cadastrado, você receberá um link de recuperação em breve. (Verifique sua caixa de entrada/spam)',
                         confirmButtonColor: '#a855f7'
                     });
                 }
             });
+        });
+    }
+
+    // --- Email Verification Logic ---
+    const verifyUid = urlParams.get('verify_uid');
+    const verifyToken = urlParams.get('verify_token');
+
+    if (verifyUid && verifyToken) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        Swal.fire({
+            title: 'Verificando E-mail...',
+            text: 'Aguarde enquanto verificamos sua conta.',
+            allowOutsideClick: false,
+            didOpen: async () => {
+                Swal.showLoading();
+                try {
+                    const response = await ApiService.post('/auth/verify-email/', {
+                        uid: verifyUid,
+                        token: verifyToken
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Seu e-mail foi verificado! Você já pode fazer login.',
+                        confirmButtonColor: '#a855f7'
+                    });
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: error.message || 'Link de verificação inválido ou expirado.',
+                        confirmButtonColor: '#a855f7'
+                    });
+                }
+            }
+        });
+    }
+
+    // --- Sign Up / Sign In Toggle Logic ---
+    const signUpBtn = document.getElementById('signUpBtn');
+    const signInBtn = document.getElementById('signInBtn');
+    const loginFormElement = document.getElementById('loginForm');
+    const registerFormElement = document.getElementById('registerForm');
+    const formTitle = document.getElementById('formTitle');
+
+    if (signUpBtn && signInBtn) {
+        signUpBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginFormElement.style.display = 'none';
+            registerFormElement.style.display = 'block';
+            formTitle.textContent = 'Sign Up';
+            alertContainer.classList.add('hidden');
+        });
+
+        signInBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerFormElement.style.display = 'none';
+            loginFormElement.style.display = 'block';
+            formTitle.textContent = 'Sign In';
+            alertContainer.classList.add('hidden');
+        });
+    }
+
+    // --- Sign Up Submit Logic ---
+    if (registerFormElement) {
+        registerFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const submitBtn = registerFormElement.querySelector('button');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Aguarde...';
+            alertContainer.classList.add('hidden');
+
+            try {
+                const response = await ApiService.post('/auth/register/', { username, email, password });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Conta Criada!',
+                    text: 'Um e-mail de verificação foi enviado para você. Por favor, verifique sua caixa de entrada para ativar a conta.',
+                    confirmButtonColor: '#a855f7'
+                }).then(() => {
+                    // Retornar para o form de login
+                    registerFormElement.reset();
+                    registerFormElement.style.display = 'none';
+                    loginFormElement.style.display = 'block';
+                    formTitle.textContent = 'Sign In';
+                });
+            } catch (error) {
+                let errorMsg = 'Erro ao cadastrar.';
+                if (error && typeof error === 'object') {
+                    errorMsg = Object.values(error).join(' ');
+                }
+                showAlert(errorMsg, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign Up';
+            }
         });
     }
 });

@@ -64,3 +64,54 @@ class PasswordResetConfirmView(APIView):
             return Response({'message': 'Senha redefinida com sucesso!'}, status=status.HTTP_200_OK)
         else:
             return Response({'detail': 'O link de redefinição é inválido ou já expirou.'}, status=status.HTTP_400_BAD_REQUEST)
+
+from .serializers import UserRegistrationSerializer
+
+class UserRegistrationView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            
+            # Enviar e-mail de verificação
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            verify_link = f"{settings.FRONTEND_URL}/index.html?verify_uid={uid}&verify_token={token}"
+            
+            email_body = f"Olá, {user.username}!\n\nObrigado por se cadastrar no AimSync SGC.\n\nPor favor, confirme seu e-mail clicando no link abaixo:\n{verify_link}\n\nCaso não tenha sido você, ignore este e-mail."
+            
+            send_mail(
+                subject='Confirme seu E-mail - AimSync SGC',
+                message=email_body,
+                from_email='noreply@aimsync.com',
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+            
+            return Response({'message': 'Usuário criado com sucesso. Verifique seu e-mail para ativar a conta.'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EmailVerificationView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        uidb64 = request.data.get('uid')
+        token = request.data.get('token')
+        
+        if not uidb64 or not token:
+            return Response({'detail': 'Dados inválidos ou incompletos.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+            
+        if user is not None and default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return Response({'message': 'E-mail verificado com sucesso! Sua conta está ativa.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'O link de verificação é inválido ou já expirou.'}, status=status.HTTP_400_BAD_REQUEST)

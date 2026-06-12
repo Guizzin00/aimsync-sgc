@@ -1,4 +1,4 @@
-# AimSync - Sistema de Gestão Comercial (SGC)
+# AimSync - Sistema de Gestão Comercial (SGC) - ENTREGA 3
 
 Sistema de Gestão Comercial para Pequenos Negócios, desenvolvido para auxiliar o controle de operações diárias em comércios como lojas de informática, papelarias, livrarias e assistências técnicas.
 
@@ -6,16 +6,17 @@ Sistema de Gestão Comercial para Pequenos Negócios, desenvolvido para auxiliar
 
 O **AimSync** é uma plataforma web completa que integra o gerenciamento de clientes, produtos, vendas e relatórios em um único sistema. A aplicação utiliza uma API REST (Django REST Framework) protegida por autenticação JWT, garantindo segurança e controle de acesso.
 
+Nesta **Entrega 3 Final**, o sistema inclui recuperação de senha real via E-mail (SMTP), fluxo de registro e verificação de contas, além de configurações nativas para deploy na Vercel com banco de dados PostgreSQL (Supabase).
+
 ## Tecnologias
 
 - **Backend:** Python / Django / Django REST Framework
 - **Autenticação:** JWT (JSON Web Token)
-- **Banco de Dados:** SQLite (com suporte simples a PostgreSQL)
+- **Banco de Dados:** SQLite (Desenvolvimento) / PostgreSQL (Produção - Supabase)
 - **Versionamento:** Git / GitHub
+- **Hospedagem (Opcional):** Vercel
 
-## Como Executar o Backend (API REST)
-
-Para testar ou rodar a Entrega 2, siga os passos abaixo:
+## Como Executar o Projeto Localmente
 
 ### 1. Pré-requisitos
 - Python 3.10+ instalado no PATH
