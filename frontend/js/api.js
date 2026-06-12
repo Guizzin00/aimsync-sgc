@@ -164,13 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Controle de Tema ---
 window.toggleTheme = function() {
-  const currentTheme = localStorage.getItem('theme') || 'light';
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  const currentTheme = localStorage.getItem('theme') || 'dark'; // Padrão é dark agora
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
   
-  if (newTheme === 'dark') {
-    document.documentElement.classList.add('dark-theme');
+  if (newTheme === 'light') {
+    document.documentElement.classList.add('light-theme');
   } else {
-    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.remove('light-theme');
   }
   
   localStorage.setItem('theme', newTheme);

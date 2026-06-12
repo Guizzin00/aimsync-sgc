@@ -59,8 +59,8 @@
     </style>
 <script>
     (function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+        const theme = localStorage.getItem('theme') || 'dark';
+        if (theme === 'light') document.documentElement.classList.add('light-theme');
         const perfil = localStorage.getItem('perfil');
         if (perfil === 'ADMIN') document.documentElement.classList.add('is-admin');
     })();
