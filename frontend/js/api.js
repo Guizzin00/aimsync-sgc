@@ -43,7 +43,21 @@ class ApiService {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      const errorMsg = data.detail || data.non_field_errors?.[0] || 'Ocorreu um erro na requisição.';
+      let errorMsg = data.detail || data.non_field_errors?.[0];
+      
+      if (!errorMsg) {
+        // Se não houver detail, pode ser erro de validação em campos específicos (ex: username já existe)
+        const fieldErrors = Object.entries(data)
+          .filter(([key, val]) => Array.isArray(val))
+          .map(([key, val]) => `${key}: ${val.join(' ')}`);
+        
+        if (fieldErrors.length > 0) {
+          errorMsg = fieldErrors.join(' | ');
+        } else {
+          errorMsg = 'Ocorreu um erro na requisição.';
+        }
+      }
+      
       throw new Error(errorMsg);
     }
 

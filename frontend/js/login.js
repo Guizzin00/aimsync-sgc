@@ -227,11 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     formTitle.textContent = 'Sign In';
                 });
             } catch (error) {
-                let errorMsg = 'Erro ao cadastrar.';
-                if (error && typeof error === 'object') {
-                    errorMsg = Object.values(error).join(' ');
-                }
-                showAlert(errorMsg, 'error');
+                showAlert(error.message || 'Erro ao cadastrar.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Sign Up';
