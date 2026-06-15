@@ -178,6 +178,19 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
   }
+
+  // Roteamento inteligente da Logo
+  const mainLogo = document.getElementById('mainLogo');
+  if (mainLogo) {
+      mainLogo.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (perfil === 'DONO') {
+              window.location.href = 'dashboard.html';
+          } else {
+              window.location.href = 'vendas.html';
+          }
+      });
+  }
 });
 
 // --- Controle de Tema ---
