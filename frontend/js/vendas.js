@@ -77,8 +77,10 @@ function renderProducts(filterText = '') {
 
         let imageHTML = '';
         if (p.imagem) {
-            // Se o backend já retornar a url completa ou parcial:
-            const imgUrl = p.imagem.startsWith('http') ? p.imagem : `http://127.0.0.1:8000${p.imagem}`;
+            // Suporta links completos, links locais ou Base64 (data:image)
+            const imgUrl = p.imagem.startsWith('http') || p.imagem.startsWith('data:image') 
+                ? p.imagem 
+                : `http://127.0.0.1:8000${p.imagem}`;
             imageHTML = `<div class="product-image" style="height: 100px; width: 100%; background-image: url('${imgUrl}'); background-size: cover; background-position: center; border-radius: 8px 8px 0 0;"></div>`;
         } else {
             // Generate a random-looking color based on product name

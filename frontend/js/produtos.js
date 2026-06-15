@@ -128,6 +128,15 @@ async function deleteProduto(id) {
     }
 }
 
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -144,7 +153,16 @@ form.addEventListener('submit', async (e) => {
     
     const imagemInput = document.getElementById('imagem');
     if (imagemInput.files.length > 0) {
-        formData.append('imagem', imagemInput.files[0]);
+        try {
+            const base64Str = await fileToBase64(imagemInput.files[0]);
+            formData.append('imagem', base64Str);
+        } catch (err) {
+            showAlert('Erro ao ler a imagem. Tente novamente.', 'error');
+            submitBtn.disabled = false;
+            return;
+        }
+    } else {
+        formData.append('imagem', '');
     }
 
     try {

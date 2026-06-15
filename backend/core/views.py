@@ -72,22 +72,6 @@ class ProdutoViewSet(viewsets.ModelViewSet):
             raise BusinessException("Não é possível excluir um produto que possui vendas registradas.")
         return super().destroy(request, *args, **kwargs)
 
-    def create(self, request, *args, **kwargs):
-        try:
-            return super().create(request, *args, **kwargs)
-        except OSError as e:
-            if 'Read-only file system' in str(e):
-                raise BusinessException("Upload de imagens não é suportado nesta versão do servidor (Vercel). Cadastre o produto sem imagem.")
-            raise e
-
-    def update(self, request, *args, **kwargs):
-        try:
-            return super().update(request, *args, **kwargs)
-        except OSError as e:
-            if 'Read-only file system' in str(e):
-                raise BusinessException("Upload de imagens não é suportado nesta versão do servidor (Vercel). Cadastre o produto sem imagem.")
-            raise e
-
 class VendaViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Venda.objects.all().order_by('-data')
     serializer_class = VendaSerializer
