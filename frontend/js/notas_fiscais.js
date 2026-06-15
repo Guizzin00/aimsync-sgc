@@ -38,7 +38,7 @@ async function loadVendas() {
     const dataFim = document.getElementById('data_fim').value;
     const clienteId = document.getElementById('cliente_id').value;
 
-    let url = '/relatorios/vendas/?';
+    let url = '/vendas/?';
     if (dataInicio) url += `data_inicio=${dataInicio}&`;
     if (dataFim) url += `data_fim=${dataFim}&`;
     if (clienteId) url += `cliente_id=${clienteId}&`;
@@ -47,7 +47,8 @@ async function loadVendas() {
 
     try {
         const data = await ApiService.get(url);
-        currentVendas = data.vendas;
+        // O endpoint /vendas/ retorna uma lista diretamente ou um objeto paginado. O ViewSet padrão retorna array se não tiver paginação.
+        currentVendas = Array.isArray(data) ? data : data.results || data.vendas;
         renderTable(currentVendas);
     } catch (error) {
         if (error.message === 'SILENT_ERROR') return;

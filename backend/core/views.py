@@ -73,9 +73,23 @@ class ProdutoViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 class VendaViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
-    queryset = Venda.objects.all().order_by('-data')
     serializer_class = VendaSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Venda.objects.all().order_by('-data')
+        data_inicio = self.request.query_params.get('data_inicio')
+        data_fim = self.request.query_params.get('data_fim')
+        cliente_id = self.request.query_params.get('cliente_id')
+
+        if data_inicio:
+            queryset = queryset.filter(data__date__gte=data_inicio)
+        if data_fim:
+            queryset = queryset.filter(data__date__lte=data_fim)
+        if cliente_id:
+            queryset = queryset.filter(cliente_id=cliente_id)
+
+        return queryset
 
     def get_permissions(self):
         if self.action == 'destroy':

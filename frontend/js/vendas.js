@@ -39,6 +39,7 @@ async function loadDependencies() {
         produtos = produtosData;
 
         populateClientes();
+        initProductsGrid();
         renderProducts();
     } catch (error) {
         if (error.message === 'SILENT_ERROR') return;
@@ -55,35 +56,23 @@ function populateClientes() {
     });
 }
 
-function renderProducts(filterText = '') {
-    productsGrid.innerHTML = '';
-    
-    const filteredProdutos = produtos.filter(p => 
-        p.nome.toLowerCase().includes(filterText.toLowerCase())
-    );
+let productCardsCache = {}; // produto_id -> HTMLElement
 
-    filteredProdutos.forEach(p => {
-        const cartItem = carrinho.find(c => c.produto_id === p.id);
-        const qtyInCart = cartItem ? cartItem.quantidade : 0;
-        const availableStock = p.quantidade_estoque - qtyInCart;
-        
+function initProductsGrid() {
+    productsGrid.innerHTML = '';
+    productCardsCache = {};
+    
+    produtos.forEach(p => {
         const card = document.createElement('div');
-        card.className = `product-card ${availableStock <= 0 ? 'disabled' : ''}`;
         card.style.position = 'relative';
         
-        if (availableStock > 0) {
-            card.onclick = () => addProductToCart(p.id);
-        }
-
         let imageHTML = '';
         if (p.imagem) {
-            // Suporta links completos, links locais ou Base64 (data:image)
             const imgUrl = p.imagem.startsWith('http') || p.imagem.startsWith('data:image') 
                 ? p.imagem 
                 : `http://127.0.0.1:8000${p.imagem}`;
             imageHTML = `<div class="product-image" style="height: 100px; width: 100%; background-image: url('${imgUrl}'); background-size: cover; background-position: center; border-radius: 8px 8px 0 0;"></div>`;
         } else {
-            // Generate a random-looking color based on product name
             const colors = ['#f43f5e', '#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ec4899'];
             const colorIndex = p.nome.length % colors.length;
             const bgColor = colors[colorIndex];
@@ -95,14 +84,49 @@ function renderProducts(filterText = '') {
         }
 
         card.innerHTML = `
-            <div class="product-stock">${p.quantidade_estoque} unid.</div>
+            <div class="product-stock" id="stock-${p.id}">${p.quantidade_estoque} unid.</div>
             ${imageHTML}
             <div class="product-info">
                 <div class="product-name" title="${p.nome}">${p.nome}</div>
                 <div class="product-price">${formatCurrency(p.preco)}</div>
             </div>
         `;
+        
+        productCardsCache[p.id] = card;
         productsGrid.appendChild(card);
+    });
+}
+
+function renderProducts(filterText = '') {
+    const filterLower = filterText.toLowerCase();
+
+    produtos.forEach(p => {
+        const card = productCardsCache[p.id];
+        if (!card) return;
+
+        // Visibilidade
+        if (p.nome.toLowerCase().includes(filterLower)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+
+        // Atualizar estoque e classe disabled
+        const cartItem = carrinho.find(c => c.produto_id === p.id);
+        const qtyInCart = cartItem ? cartItem.quantidade : 0;
+        const availableStock = p.quantidade_estoque - qtyInCart;
+
+        card.className = `product-card ${availableStock <= 0 ? 'disabled' : ''}`;
+        
+        const stockEl = document.getElementById(`stock-${p.id}`);
+        if (stockEl) stockEl.textContent = `${availableStock} unid.`;
+
+        // Atualizar evento de click
+        if (availableStock > 0) {
+            card.onclick = () => addProductToCart(p.id);
+        } else {
+            card.onclick = null;
+        }
     });
 }
 
