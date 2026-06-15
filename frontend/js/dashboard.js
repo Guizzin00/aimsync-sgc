@@ -20,16 +20,25 @@ async function loadDashboardData() {
 function buildCharts(vendas) {
     if (!vendas || vendas.length === 0) return;
 
-    // 1. Evolução de Vendas (Por data)
-    const salesByDate = {};
+    // 1. Evolução de Vendas Anuais (Por Mês)
+    const salesByMonth = {
+        'Jan': 0, 'Fev': 0, 'Mar': 0, 'Abr': 0, 'Mai': 0, 'Jun': 0,
+        'Jul': 0, 'Ago': 0, 'Set': 0, 'Out': 0, 'Nov': 0, 'Dez': 0
+    };
+    
+    const monthNames = Object.keys(salesByMonth);
+
     vendas.forEach(v => {
-        const date = new Date(v.data).toLocaleDateString('pt-BR');
-        if (!salesByDate[date]) salesByDate[date] = 0;
-        salesByDate[date] += parseFloat(v.valor_total);
+        // Exemplo de data: "2026-06-15T..."
+        const dateObj = new Date(v.data);
+        const monthIndex = dateObj.getMonth(); // 0 a 11
+        const monthName = monthNames[monthIndex];
+        
+        salesByMonth[monthName] += parseFloat(v.valor_total);
     });
 
-    const dates = Object.keys(salesByDate).slice(-7); // Last 7 days with sales
-    const values = dates.map(d => salesByDate[d]);
+    const dates = monthNames;
+    const values = dates.map(m => salesByMonth[m]);
 
     const salesCtx = document.getElementById('salesChart').getContext('2d');
     const salesGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
@@ -41,17 +50,18 @@ function buildCharts(vendas) {
         data: {
             labels: dates,
             datasets: [{
-                label: 'Faturamento (R$)',
+                label: 'Faturamento Anual (R$)',
                 data: values,
                 borderColor: '#8b5cf6',
                 backgroundColor: salesGradient,
                 borderWidth: 3,
                 fill: true,
                 tension: 0.4,
-                pointBackgroundColor: '#8b5cf6',
-                pointBorderColor: '#fff',
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#8b5cf6',
                 pointBorderWidth: 2,
-                pointRadius: 4
+                pointRadius: 4,
+                pointHoverRadius: 6
             }]
         },
         options: {
