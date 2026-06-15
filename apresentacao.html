@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AimSync SGC - Apresentação</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --purple: #a855f7;
+    --purple-dark: #7c3aed;
+    --purple-light: #d8b4fe;
+    --bg-dark: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-card2: #16213e;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --orange: #f97316;
+    --red: #ef4444;
+    --cyan: #06b6d4;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* SLIDES */
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  /* BG GRADIENTS */
+  .bg-main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(168,85,247,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(59,130,246,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(26,26,46,0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 50px;
+    padding: 10px 20px;
+    z-index: 9999;
+  }
+  .nav button {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 6px 12px;
+    border-radius: 30px;
+    transition: all 0.2s;
+  }
+  .nav button:hover { background: rgba(168,85,247,0.2); color: var(--purple-light); }
+  .nav .slide-count { color: var(--text-muted); font-size: 13px; min-width: 60px; text-align: center; }
+
+  /* SLIDE 1 - CAPA */
+  .slide-capa {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 50%, #0a1628 100%);
+  }
+  .slide-capa .logo-ring {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px;
+    margin: 0 auto 24px;
+    box-shadow: 0 0 60px rgba(168,85,247,0.5);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 40px rgba(168,85,247,0.5); }
+    50% { box-shadow: 0 0 80px rgba(168,85,247,0.8), 0 0 120px rgba(59,130,246,0.3); }
+  }
+  .slide-capa h1 {
+    font-size: 72px; font-weight: 900;
+    background: linear-gradient(135deg, #fff, var(--purple-light), var(--blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .slide-capa .subtitle {
+    font-size: 22px; color: var(--text-muted); margin-top: 12px; font-weight: 300;
+  }
+  .slide-capa .tags {
+    display: flex; gap: 10px; justify-content: center; margin-top: 32px; flex-wrap: wrap;
+  }
+  .tag {
+    background: rgba(168,85,247,0.15);
+    border: 1px solid rgba(168,85,247,0.4);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--purple-light);
+  }
+  .slide-capa .team {
+    margin-top: 40px;
+    font-size: 14px; color: var(--text-muted);
+  }
+  .slide-capa .team strong { color: var(--text); }
+
+  /* SLIDE HEADER (reusable) */
+  .slide-header {
+    padding: 40px 60px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .slide-header .icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .slide-header h2 {
+    font-size: 32px; font-weight: 800;
+    background: linear-gradient(90deg, #fff, var(--purple-light));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .slide-header .badge {
+    margin-left: auto;
+    background: rgba(168,85,247,0.2);
+    border: 1px solid rgba(168,85,247,0.4);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--purple-light);
+  }
+
+  /* SLIDE CONTENT */
+  .slide-body {
+    flex: 1;
+    padding: 24px 60px 80px;
+    overflow: auto;
+  }
+
+  /* CARDS */
+  .cards-grid { display: grid; gap: 16px; }
+  .cards-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .cards-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cards-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .card.purple-border { border-color: rgba(168,85,247,0.3); }
+  .card.blue-border { border-color: rgba(59,130,246,0.3); }
+  .card.green-border { border-color: rgba(34,197,94,0.3); }
+  .card.orange-border { border-color: rgba(249,115,22,0.3); }
+
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .card p, .card li { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .card ul { list-style: none; }
+  .card ul li::before { content: '▸ '; color: var(--purple); }
+  .card .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card .stat { font-size: 36px; font-weight: 900; color: var(--purple-light); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(168,85,247,0.4), transparent);
+    margin: 20px 0;
+  }
+
+  /* DIAGRAM */
+  .entity-box {
+    background: var(--bg-card2);
+    border: 2px solid rgba(168,85,247,0.5);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .entity-box .entity-title {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .entity-box .attr {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .entity-box .attr.pk { color: #fbbf24; }
+  .entity-box .attr.fk { color: #60a5fa; }
+
+  /* ARROW SVG */
+  .diagram-svg { position: absolute; pointer-events: none; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .code-block .kw { color: #ff79c6; }
+  .code-block .cl { color: #8be9fd; }
+  .code-block .st { color: #f1fa8c; }
+  .code-block .cm { color: #6272a4; }
+  .code-block .fn { color: #50fa7b; }
+
+  /* BADGE PILL */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(168,85,247,0.15);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--purple-light);
+    margin: 3px;
+  }
+  .pill.green { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); color: #86efac; }
+  .pill.blue { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); color: #93c5fd; }
+  .pill.orange { background: rgba(249,115,22,0.15); border-color: rgba(249,115,22,0.3); color: #fdba74; }
+  .pill.red { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+  /* CRITERIA TABLE */
+  .criteria-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .criteria-table th {
+    text-align: left; padding: 10px 14px;
+    background: rgba(168,85,247,0.2);
+    color: var(--purple-light);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .criteria-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  .criteria-table tr:hover td { background: rgba(168,85,247,0.05); }
+  .criteria-table .pts {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .criteria-table .check { color: var(--green); font-size: 16px; }
+
+  /* ROUTE CHIP */
+  .route { display: inline-flex; align-items: center; gap: 8px; margin: 4px 0; }
+  .method {
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 800;
+    font-family: monospace; letter-spacing: 1px;
+  }
+  .method.GET { background: rgba(34,197,94,0.2); color: #86efac; }
+  .method.POST { background: rgba(59,130,246,0.2); color: #93c5fd; }
+  .method.PUT { background: rgba(249,115,22,0.2); color: #fdba74; }
+  .method.DELETE { background: rgba(239,68,68,0.2); color: #fca5a5; }
+  .route-path { font-family: monospace; font-size: 12px; color: var(--text-muted); }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; }
+  .checklist .ck { color: var(--green); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .checklist .desc { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+
+  /* SCORE */
+  .score-box {
+    background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(59,130,246,0.1));
+    border: 1px solid rgba(168,85,247,0.4);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+  .score-box .total { font-size: 64px; font-weight: 900; color: var(--purple-light); line-height: 1; }
+  .score-box .label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* FLOW */
+  .flow {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    justify-content: center; padding: 12px 0;
+  }
+  .flow-step {
+    background: var(--bg-card);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .flow-arrow { color: var(--purple); font-size: 18px; }
+
+  /* PROGRESS BAR */
+  .pbar { background: rgba(255,255,255,0.08); border-radius: 99px; height: 8px; overflow: hidden; margin-top: 8px; }
+  .pbar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--purple), var(--blue)); }
+
+  /* Decorative dots */
+  .dots {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .dot {
+    position: absolute; border-radius: 50%;
+    background: rgba(168,85,247,0.06);
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .slide-num-indicator {
+    position: fixed; top: 20px; right: 24px;
+    font-size: 12px; color: var(--text-muted);
+    background: rgba(26,26,46,0.7);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 4px 12px; border-radius: 20px;
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<div class="slide-num-indicator" id="slideIndicator">1 / 18</div>
+
+<!-- ========== SLIDE 1: CAPA ========== -->
+<div class="slide slide-capa bg-main active" id="slide-1">
+  <div class="dots">
+    <div class="dot" style="width:300px;height:300px;top:-100px;right:-100px;animation-delay:0s"></div>
+    <div class="dot" style="width:200px;height:200px;bottom:-50px;left:-50px;animation-delay:2s"></div>
+    <div class="dot" style="width:150px;height:150px;top:50%;right:10%;animation-delay:1s"></div>
+  </div>
+  <div style="position:relative;z-index:1">
+    <div class="logo-ring">🚀</div>
+    <h1>AimSync</h1>
+    <div style="font-size:28px;font-weight:800;color:var(--purple-light);margin-top:4px">SGC</div>
+    <div class="subtitle">Sistema de Gestão Comercial · Loja de Informática</div>
+    <div class="tags">
+      <span class="tag">🏗️ Arquitetura em Camadas</span>
+      <span class="tag">🔐 JWT Authentication</span>
+      <span class="tag">🌐 API REST</span>
+      <span class="tag">🐍 Django · Python</span>
+      <span class="tag">🗄️ PostgreSQL</span>
+    </div>
+    <div class="team" style="margin-top:36px">
+      <p>Projeto Acadêmico — Engenharia de Software</p>
+      <p style="margin-top:6px">Guilherme Oliveira · 2025</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 2: CONTEXTO ========== -->
+<div class="slide bg-main" id="slide-2">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(168,85,247,0.2)">🏪</div>
+    <h2>Contexto e Problema</h2>
+    <span class="badge">Entrega 1 · 0,5pts</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-2" style="margin-bottom:16px">
+      <div class="card purple-border">
+        <div class="card-icon">📍</div>
+        <h3>O Contexto Real</h3>
+        <p>Uma loja de informática que precisa controlar seu dia a dia de forma digital. O atendente lida com clientes, produtos, estoque, vendas e notas fiscais — tudo manualmente ou em planilhas.</p>
+        <div style="margin-top:12px">
+          <span class="pill">🛒 Vendas</span>
+          <span class="pill">📦 Estoque</span>
+          <span class="pill">🤝 Clientes</span>
+          <span class="pill">🧾 Nota Fiscal</span>
+        </div>
+      </div>
+      <div class="card blue-border">
+        <div class="card-icon">⚠️</div>
+        <h3>Os Problemas</h3>
+        <ul>
+          <li>Sem controle de estoque automatizado</li>
+          <li>Notas fiscais emitidas à mão</li>
+          <li>Sem relatório de vendas por período</li>
+          <li>Dois perfis de acesso (Dono / Funcionário) sem separação</li>
+          <li>Impossível consultar histórico de clientes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cards-grid cols-3">
+      <div class="card green-border">
+        <div class="card-icon">🎯</div>
+        <h3>Objetivo Principal</h3>
+        <p>Digitalizar a operação completa da loja com um sistema web moderno, acessível e seguro.</p>
+      </div>
+      <div class="card orange-border">
+        <div class="card-icon">👥</div>
+        <h3>Público Alvo</h3>
+        <p>Proprietário da loja (DONO) e seus funcionários (FUNCIONÁRIO) com acessos distintos e controlados.</p>
+      </div>
+      <div class="card purple-border">
+        <div class="card-icon">🌐</div>
+        <h3>Solução Proposta</h3>
+        <p>Sistema Web com Frontend moderno consumindo uma API REST Django, protegida com JWT e hospedada em nuvem.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 3: REQUISITOS ========== -->
+<div class="slide bg-main" id="slide-3">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(59,130,246,0.2)">📋</div>
+    <h2>Requisitos Funcionais e Não Funcionais</h2>
+    <span class="badge">Entrega 1 · 0,5pts</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-2">
+      <div class="card">
+        <h3 style="color:#93c5fd;margin-bottom:14px">⚙️ Requisitos Funcionais</h3>
+        <ul class="checklist">
+          <li><span class="ck">✓</span><div><div>Gestão de Clientes (CRUD completo)</div><div class="desc">Cadastro, edição, listagem e exclusão com CPF único</div></div></li>
+          <li><span class="ck">✓</span><div><div>Gestão de Produtos e Estoque</div><div class="desc">Preço, quantidade, estoque mínimo com alerta</div></div></li>
+          <li><span class="ck">✓</span><div><div>Ponto de Venda (PDV)</div><div class="desc">Carrinho, seleção de produto, forma de pagamento</div></div></li>
+          <li><span class="ck">✓</span><div><div>Emissão de Nota Fiscal</div><div class="desc">Cupom imprimível por venda com dados completos</div></div></li>
+          <li><span class="ck">✓</span><div><div>Relatório de Vendas</div><div class="desc">Filtro por período, cliente, totais consolidados</div></div></li>
+          <li><span class="ck">✓</span><div><div>Gestão de Equipe</div><div class="desc">Criar funcionários, definir perfis de acesso</div></div></li>
+          <li><span class="ck">✓</span><div><div>Recuperação de Senha por E-mail</div><div class="desc">Link seguro enviado ao e-mail cadastrado</div></div></li>
+          <li><span class="ck">✓</span><div><div>Dashboard com Gráficos</div><div class="desc">Visão geral anual de vendas com Chart.js</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:#86efac;margin-bottom:14px">🛡️ Requisitos Não Funcionais</h3>
+        <ul class="checklist">
+          <li><span class="ck">✓</span><div><div>Segurança — JWT Authentication</div><div class="desc">Tokens de acesso e refresh com expiração</div></div></li>
+          <li><span class="ck">✓</span><div><div>Controle de Acesso (RBAC)</div><div class="desc">Perfis DONO e FUNCIONÁRIO com rotas protegidas</div></div></li>
+          <li><span class="ck">✓</span><div><div>Performance Otimizada</div><div class="desc">select_related e prefetch_related no Django ORM</div></div></li>
+          <li><span class="ck">✓</span><div><div>Disponibilidade em Nuvem</div><div class="desc">Vercel (Frontend + Backend) + Supabase (PostgreSQL)</div></div></li>
+          <li><span class="ck">✓</span><div><div>Manutenibilidade</div><div class="desc">Código em camadas: Views → Services → Models</div></div></li>
+          <li><span class="ck">✓</span><div><div>Tratamento de Exceções</div><div class="desc">BusinessException global com handler personalizado</div></div></li>
+          <li><span class="ck">✓</span><div><div>Interface Responsiva</div><div class="desc">CSS moderno com tema claro e escuro</div></div></li>
+          <li><span class="ck">✓</span><div><div>Versionamento</div><div class="desc">GitHub com commits frequentes e organizados</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 4: ARQUITETURA ========== -->
+<div class="slide bg-main" id="slide-4">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(6,182,212,0.2)">🏗️</div>
+    <h2>Arquitetura do Sistema</h2>
+    <span class="badge">Arquitetura em Camadas</span>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;justify-content:center;gap:20px">
+    <div class="flow" style="justify-content:center;gap:6px">
+      <div class="flow-step" style="border-color:rgba(59,130,246,0.5);min-width:140px">
+        <div style="font-size:24px">🌐</div>
+        <div style="font-weight:700;color:#93c5fd">Frontend</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">HTML + CSS + JS<br>Vercel Static</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(168,85,247,0.5);min-width:140px">
+        <div style="font-size:24px">🔐</div>
+        <div style="font-weight:700;color:var(--purple-light)">JWT Auth</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">simplejwt<br>Bearer Token</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(249,115,22,0.5);min-width:140px">
+        <div style="font-size:24px">🐍</div>
+        <div style="font-weight:700;color:#fdba74">API REST</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Django + DRF<br>Vercel Serverless</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(34,197,94,0.5);min-width:140px">
+        <div style="font-size:24px">🗄️</div>
+        <div style="font-weight:700;color:#86efac">PostgreSQL</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Supabase Cloud<br>Django ORM</div>
+      </div>
+    </div>
+    <div class="cards-grid cols-3">
+      <div class="card blue-border">
+        <h3>📁 Camada de Apresentação</h3>
+        <ul>
+          <li>HTML pages (SPA-like)</li>
+          <li>api.js — cliente HTTP centralizado</li>
+          <li>localStorage — estado e tokens</li>
+          <li>RBAC no frontend (data-admin-only)</li>
+        </ul>
+      </div>
+      <div class="card purple-border">
+        <h3>⚙️ Camada de Negócios</h3>
+        <ul>
+          <li>views.py — ViewSets e endpoints</li>
+          <li>services.py — regras de negócio</li>
+          <li>serializers.py — validação e DTO</li>
+          <li>permissions.py — IsAdmin / IsAuth</li>
+        </ul>
+      </div>
+      <div class="card green-border">
+        <h3>🗃️ Camada de Dados</h3>
+        <ul>
+          <li>models.py — entidades Django ORM</li>
+          <li>migrations — versionamento do banco</li>
+          <li>select_related — performance N+1</li>
+          <li>PostgreSQL no Supabase</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 5: DIAGRAMA DE DOMÍNIO ========== -->
+<div class="slide bg-main" id="slide-5">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(168,85,247,0.2)">🗂️</div>
+    <h2>Diagrama de Domínio</h2>
+    <span class="badge">Entrega 1 · 0,5pts</span>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;justify-content:center">
+    <div style="display:flex;gap:24px;align-items:flex-start;justify-content:center">
+      <div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+        <div class="entity-box" style="width:180px">
+          <div class="entity-title">USUARIO</div>
+          <div class="attr pk">🔑 id</div>
+          <div class="attr">username</div>
+          <div class="attr">email</div>
+          <div class="attr">password</div>
+          <div class="attr" style="color:#a78bfa">perfil: DONO/FUNC.</div>
+        </div>
+        <div style="text-align:center;font-size:11px;color:var(--text-muted)">registra ▼</div>
+        <div class="entity-box" style="width:180px">
+          <div class="entity-title">VENDA</div>
+          <div class="attr pk">🔑 id</div>
+          <div class="attr">data</div>
+          <div class="attr">valor_total</div>
+          <div class="attr">forma_pagamento</div>
+          <div class="attr fk">🔗 cliente_id (FK)</div>
+          <div class="attr fk">🔗 usuario_id (FK)</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:80px;align-items:center">
+        <div style="text-align:center">
+          <div style="font-size:11px;color:var(--text-muted)">possui ◀▶ pertence</div>
+          <div style="font-size:24px;color:var(--purple);margin:4px 0">⇄</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:11px;color:var(--text-muted)">composta por ▼</div>
+          <div style="font-size:24px;color:var(--purple);margin:4px 0">↕</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+        <div class="entity-box" style="width:180px">
+          <div class="entity-title">CLIENTE</div>
+          <div class="attr pk">🔑 id</div>
+          <div class="attr">nome</div>
+          <div class="attr" style="color:#fbbf24">cpf (único)</div>
+          <div class="attr">email</div>
+          <div class="attr">telefone</div>
+          <div class="attr">endereco</div>
+        </div>
+        <div style="text-align:center;font-size:11px;color:var(--text-muted)">inclui itens ▼</div>
+        <div class="entity-box" style="width:180px">
+          <div class="entity-title">ITEM VENDA</div>
+          <div class="attr pk">🔑 id</div>
+          <div class="attr">quantidade</div>
+          <div class="attr">valor_unitario</div>
+          <div class="attr fk">🔗 venda_id (FK)</div>
+          <div class="attr fk">🔗 produto_id (FK)</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:20px;align-items:center">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">referencia ◀</div>
+        <div style="font-size:24px;color:var(--purple)">⇐</div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:8px">
+        <div class="entity-box" style="width:180px">
+          <div class="entity-title">PRODUTO</div>
+          <div class="attr pk">🔑 id</div>
+          <div class="attr">nome</div>
+          <div class="attr">descricao</div>
+          <div class="attr">preco</div>
+          <div class="attr">qtd_estoque</div>
+          <div class="attr">estoque_minimo</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <span class="pill">1 Cliente → N Vendas</span>
+      <span class="pill blue">1 Venda → N Itens</span>
+      <span class="pill green">1 Produto → N Itens</span>
+      <span class="pill orange">1 Usuario → N Vendas</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 6: DIAGRAMA CLASSES ========== -->
+<div class="slide bg-main" id="slide-6">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(59,130,246,0.2)">📐</div>
+    <h2>Diagrama de Classes</h2>
+    <span class="badge">Entrega 1 · 0,5pts</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-3" style="gap:12px">
+      <div class="card purple-border" style="padding:14px">
+        <div style="background:var(--purple);color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px">Usuario</div>
+        <div style="font-size:11px;color:#93c5fd;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:8px">
+          <div>+ id: int</div>
+          <div>+ username: str</div>
+          <div>+ email: EmailField</div>
+          <div>+ perfil: str [DONO|FUNC]</div>
+        </div>
+        <div style="font-size:11px;color:#86efac">
+          <div>+ authenticate()</div>
+          <div>+ get_token()</div>
+          <div>+ reset_password()</div>
+        </div>
+      </div>
+      <div class="card blue-border" style="padding:14px">
+        <div style="background:#3b82f6;color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px">Cliente</div>
+        <div style="font-size:11px;color:#93c5fd;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:8px">
+          <div>+ id: int</div>
+          <div>+ nome: str</div>
+          <div>+ cpf: str (unique)</div>
+          <div>+ email: str</div>
+          <div>+ telefone: str</div>
+          <div>+ endereco: str</div>
+        </div>
+        <div style="font-size:11px;color:#86efac">
+          <div>+ get_historico_vendas()</div>
+        </div>
+      </div>
+      <div class="card green-border" style="padding:14px">
+        <div style="background:#16a34a;color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px">Produto</div>
+        <div style="font-size:11px;color:#93c5fd;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:8px">
+          <div>+ id: int</div>
+          <div>+ nome: str</div>
+          <div>+ preco: Decimal</div>
+          <div>+ quantidade_estoque: int</div>
+          <div>+ estoque_minimo: int</div>
+        </div>
+        <div style="font-size:11px;color:#86efac">
+          <div>+ verificar_estoque_minimo()</div>
+          <div>+ reduzir_estoque(qtd)</div>
+        </div>
+      </div>
+      <div class="card orange-border" style="padding:14px">
+        <div style="background:#ea580c;color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px">Venda</div>
+        <div style="font-size:11px;color:#93c5fd;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:8px">
+          <div>+ id: int</div>
+          <div>+ data: datetime</div>
+          <div>+ valor_total: Decimal</div>
+          <div>+ forma_pagamento: str</div>
+          <div>+ cliente: FK(Cliente)</div>
+          <div>+ usuario: FK(Usuario)</div>
+        </div>
+        <div style="font-size:11px;color:#86efac">
+          <div>+ calcular_total()</div>
+          <div>+ gerar_nota_fiscal()</div>
+        </div>
+      </div>
+      <div class="card" style="padding:14px;border-color:rgba(6,182,212,0.3)">
+        <div style="background:#0e7490;color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px">ItemVenda</div>
+        <div style="font-size:11px;color:#93c5fd;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:8px">
+          <div>+ id: int</div>
+          <div>+ quantidade: int</div>
+          <div>+ valor_unitario: Decimal</div>
+          <div>+ venda: FK(Venda)</div>
+          <div>+ produto: FK(Produto)</div>
+        </div>
+        <div style="font-size:11px;color:#86efac">
+          <div>+ get_subtotal()</div>
+        </div>
+      </div>
+      <div class="card" style="padding:14px;border-color:rgba(255,255,255,0.15)">
+        <div style="background:#475569;color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px">VendaService</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-style:italic">« Service Layer »</div>
+        <div style="font-size:11px;color:#86efac">
+          <div>+ registrar_venda(cliente, usuario, itens, pagamento)</div>
+          <div style="margin-top:6px;color:var(--text-muted)">→ Valida estoque</div>
+          <div style="color:var(--text-muted)">→ Desconta estoque</div>
+          <div style="color:var(--text-muted)">→ Persiste venda + itens</div>
+          <div style="color:var(--text-muted)">→ Lança BusinessException</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 7: DIAGRAMA DO BANCO ========== -->
+<div class="slide bg-main" id="slide-7">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(34,197,94,0.2)">🗄️</div>
+    <h2>Diagrama Lógico do Banco</h2>
+    <span class="badge">Entrega 1 · 0,5pts</span>
+  </div>
+  <div class="slide-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;height:100%">
+      <div>
+        <div class="code-block" style="height:100%">
+<span class="cm">-- Tabela: core_usuario</span>
+<span class="kw">CREATE TABLE</span> <span class="cl">core_usuario</span> (
+  id <span class="cl">SERIAL</span> <span class="kw">PRIMARY KEY</span>,
+  username <span class="cl">VARCHAR(150)</span> UNIQUE,
+  email <span class="cl">VARCHAR(254)</span>,
+  password <span class="cl">VARCHAR(128)</span>,
+  perfil <span class="cl">VARCHAR(50)</span>
+    CHECK (perfil IN (<span class="st">'DONO'</span>,<span class="st">'FUNCIONARIO'</span>))
+);
+
+<span class="cm">-- Tabela: core_cliente</span>
+<span class="kw">CREATE TABLE</span> <span class="cl">core_cliente</span> (
+  id <span class="cl">SERIAL</span> <span class="kw">PRIMARY KEY</span>,
+  nome <span class="cl">VARCHAR(255)</span> NOT NULL,
+  cpf <span class="cl">VARCHAR(14)</span> <span class="kw">UNIQUE NOT NULL</span>,
+  email <span class="cl">VARCHAR(254)</span>,
+  telefone <span class="cl">VARCHAR(20)</span>,
+  endereco <span class="cl">VARCHAR(255)</span>
+);</div>
+      </div>
+      <div>
+        <div class="code-block" style="height:100%">
+<span class="cm">-- Tabela: core_produto</span>
+<span class="kw">CREATE TABLE</span> <span class="cl">core_produto</span> (
+  id <span class="cl">SERIAL</span> <span class="kw">PRIMARY KEY</span>,
+  nome <span class="cl">VARCHAR(255)</span> NOT NULL,
+  descricao <span class="cl">TEXT</span>,
+  preco <span class="cl">DECIMAL(10,2)</span> NOT NULL,
+  quantidade_estoque <span class="cl">INTEGER</span> DEFAULT 0,
+  estoque_minimo <span class="cl">INTEGER</span> DEFAULT 5,
+  imagem <span class="cl">TEXT</span>
+);
+
+<span class="cm">-- Tabela: core_venda</span>
+<span class="kw">CREATE TABLE</span> <span class="cl">core_venda</span> (
+  id <span class="cl">SERIAL</span> <span class="kw">PRIMARY KEY</span>,
+  data <span class="cl">TIMESTAMPTZ</span>,
+  valor_total <span class="cl">DECIMAL(10,2)</span>,
+  forma_pagamento <span class="cl">VARCHAR(20)</span>,
+  cliente_id <span class="cl">INTEGER</span>
+    <span class="kw">REFERENCES</span> <span class="cl">core_cliente</span>(id),
+  usuario_id <span class="cl">INTEGER</span>
+    <span class="kw">REFERENCES</span> <span class="cl">core_usuario</span>(id)
+);</div>
+      </div>
+      <div>
+        <div class="code-block" style="margin-bottom:12px">
+<span class="cm">-- Tabela: core_itemvenda</span>
+<span class="kw">CREATE TABLE</span> <span class="cl">core_itemvenda</span> (
+  id <span class="cl">SERIAL</span> <span class="kw">PRIMARY KEY</span>,
+  quantidade <span class="cl">INTEGER</span> NOT NULL,
+  valor_unitario <span class="cl">DECIMAL(10,2)</span>,
+  venda_id <span class="cl">INTEGER</span>
+    <span class="kw">REFERENCES</span> <span class="cl">core_venda</span>(id)
+    <span class="kw">ON DELETE CASCADE</span>,
+  produto_id <span class="cl">INTEGER</span>
+    <span class="kw">REFERENCES</span> <span class="cl">core_produto</span>(id)
+    <span class="kw">ON DELETE RESTRICT</span>
+);</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="pill" style="display:flex">🔑 Chaves Primárias — SERIAL (Auto-Increment)</div>
+          <div class="pill blue" style="display:flex">🔗 Foreign Keys — com RESTRICT para integridade</div>
+          <div class="pill green" style="display:flex">✓ 3ª Forma Normal — sem redundâncias</div>
+          <div class="pill orange" style="display:flex">⚡ Índices automáticos nas FKs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 8: SEGURANÇA JWT ========== -->
+<div class="slide bg-main" id="slide-8">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(168,85,247,0.2)">🔐</div>
+    <h2>Autenticação e Segurança</h2>
+    <span class="badge">JWT + RBAC</span>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:16px">
+    <div class="flow">
+      <div class="flow-step" style="border-color:rgba(59,130,246,0.5)">
+        <div style="font-size:18px">👤</div>
+        <div style="font-size:12px;font-weight:600">Login</div>
+        <div style="font-size:10px;color:var(--text-muted)">user + pass</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(168,85,247,0.5)">
+        <div style="font-size:18px">🖥️</div>
+        <div style="font-size:12px;font-weight:600">Django API</div>
+        <div style="font-size:10px;color:var(--text-muted)">/api/auth/token/</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(34,197,94,0.5)">
+        <div style="font-size:18px">🎟️</div>
+        <div style="font-size:12px;font-weight:600">JWT Token</div>
+        <div style="font-size:10px;color:var(--text-muted)">access + refresh</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(249,115,22,0.5)">
+        <div style="font-size:18px">💾</div>
+        <div style="font-size:12px;font-weight:600">localStorage</div>
+        <div style="font-size:10px;color:var(--text-muted)">token + perfil</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(6,182,212,0.5)">
+        <div style="font-size:18px">🛡️</div>
+        <div style="font-size:12px;font-weight:600">Rotas Protegidas</div>
+        <div style="font-size:10px;color:var(--text-muted)">Bearer Header</div>
+      </div>
+    </div>
+    <div class="cards-grid cols-2">
+      <div class="card purple-border">
+        <h3>👑 Perfil: DONO</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Dashboard e Gráficos Anuais</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Relatório de Vendas (por período)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Gestão de Equipe (criar usuários)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Configurações da Loja (CNPJ, nome)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Excluir Clientes e Produtos</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Todas as telas do Funcionário</li>
+        </ul>
+      </div>
+      <div class="card blue-border">
+        <h3>👷 Perfil: FUNCIONARIO</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Ponto de Venda (PDV)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Consultar Clientes e Produtos</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Emitir Nota Fiscal</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✗ Dashboard (bloqueado)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✗ Relatórios (bloqueado)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✗ Configurações (bloqueado)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(34,197,94,0.3)">
+      <div style="display:flex;gap:20px;align-items:center">
+        <div>
+          <h3>🛡️ Proteção Dupla</h3>
+          <p style="margin-top:6px">O sistema bloqueia o acesso em dois níveis: <strong>Frontend</strong> (CSS <code>data-admin-only</code> oculta botões + JS redireciona URLs bloqueadas) e <strong>Backend</strong> (permissão <code>IsAdmin</code> no endpoint da API retorna 403).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 9: API REST ========== -->
+<div class="slide bg-main" id="slide-9">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(249,115,22,0.2)">🌐</div>
+    <h2>API REST</h2>
+    <span class="badge">Django REST Framework</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-2" style="gap:16px">
+      <div class="card">
+        <h3 style="margin-bottom:12px">🔐 Autenticação</h3>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/auth/token/</span></div>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/auth/token/refresh/</span></div>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/auth/password-reset/</span></div>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/auth/password-reset/confirm/</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">🤝 Clientes</h3>
+        <div class="route"><span class="method GET">GET</span><span class="route-path">/api/clientes/</span></div>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/clientes/</span></div>
+        <div class="route"><span class="method PUT">PUT</span><span class="route-path">/api/clientes/{id}/</span></div>
+        <div class="route"><span class="method DELETE">DELETE</span><span class="route-path">/api/clientes/{id}/</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">📦 Produtos</h3>
+        <div class="route"><span class="method GET">GET</span><span class="route-path">/api/produtos/</span></div>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/produtos/</span></div>
+        <div class="route"><span class="method PUT">PUT</span><span class="route-path">/api/produtos/{id}/</span></div>
+        <div class="route"><span class="method DELETE">DELETE</span><span class="route-path">/api/produtos/{id}/</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">🛒 Vendas</h3>
+        <div class="route"><span class="method GET">GET</span><span class="route-path">/api/vendas/?data_inicio=&data_fim=&cliente_id=</span></div>
+        <div class="route"><span class="method POST">POST</span><span class="route-path">/api/vendas/</span></div>
+        <div class="route"><span class="method DELETE">DELETE</span><span class="route-path">/api/vendas/{id}/</span></div>
+        <div class="route"><span class="method GET">GET</span><span class="route-path">/api/relatorios/vendas/</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;border-color:rgba(34,197,94,0.3);display:flex;gap:16px;align-items:center">
+      <div>
+        <span class="pill green">✓ JSON Responses</span>
+        <span class="pill blue">✓ HTTP Status Codes</span>
+        <span class="pill orange">✓ Paginação implícita</span>
+        <span class="pill">✓ Filtros via QueryString</span>
+        <span class="pill red">✓ 403 em rotas restritas</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 10: EXCEÇÕES ========== -->
+<div class="slide bg-main" id="slide-10">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(239,68,68,0.2)">⚠️</div>
+    <h2>Tratamento de Exceções</h2>
+    <span class="badge">Entrega 2 · 0,6pts</span>
+  </div>
+  <div class="slide-body" style="display:flex;gap:16px">
+    <div style="flex:1">
+      <div class="code-block" style="height:100%">
+<span class="cm"># exceptions.py — Exceção de Negócio</span>
+<span class="kw">from</span> rest_framework.exceptions <span class="kw">import</span> APIException
+
+<span class="kw">class</span> <span class="cl">BusinessException</span>(APIException):
+    status_code = <span class="st">400</span>
+    default_detail = <span class="st">'Erro de negócio'</span>
+
+<span class="cm">-------------------------------------------</span>
+<span class="cm"># services.py — Uso em regras de negócio</span>
+<span class="kw">def</span> <span class="fn">registrar_venda</span>(cliente, usuario, itens, pagamento):
+    <span class="kw">for</span> item_data <span class="kw">in</span> itens:
+        produto = item_data[<span class="st">'produto'</span>]
+        qtd = item_data[<span class="st">'quantidade'</span>]
+        
+        <span class="kw">if</span> produto.quantidade_estoque < qtd:
+            <span class="kw">raise</span> <span class="cl">BusinessException</span>(
+                <span class="st">f"Estoque insuficiente para {produto.nome}"</span>
+            )
+    ...
+<span class="cm">-------------------------------------------</span>
+<span class="cm"># views.py — Proteção de exclusão</span>
+<span class="kw">def</span> <span class="fn">destroy</span>(self, request, *args):
+    instance = self.get_object()
+    <span class="kw">if</span> instance.vendas.exists():
+        <span class="kw">raise</span> <span class="cl">BusinessException</span>(
+          <span class="st">"Não é possível excluir cliente com vendas"</span>
+        )</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+      <div class="card green-border">
+        <h3>✅ Exceções Implementadas</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">❌ Estoque insuficiente ao vender</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">❌ Excluir cliente com vendas vinculadas</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">❌ Excluir produto com vendas vinculadas</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">❌ CPF duplicado ao cadastrar cliente</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">❌ Acesso sem token (401 Unauthorized)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">❌ Acesso de Funcionário a rotas de Admin (403)</li>
+        </ul>
+      </div>
+      <div class="card orange-border">
+        <h3>🔄 Handler Global no Frontend</h3>
+        <p style="margin-top:8px;font-size:13px">Todos os erros são capturados em <code>api.js</code> com try/catch e exibidos ao usuário via <strong>SweetAlert2</strong> — modais bonitos com mensagem amigável, sem crash na tela.</p>
+        <div style="margin-top:12px">
+          <span class="pill orange">400 Bad Request</span>
+          <span class="pill red">401 Unauthorized</span>
+          <span class="pill red">403 Forbidden</span>
+          <span class="pill">500 Server Error</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 11: FUNCIONALIDADES ========== -->
+<div class="slide bg-main" id="slide-11">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(34,197,94,0.2)">🖥️</div>
+    <h2>Funcionalidades e Telas</h2>
+    <span class="badge">Entrega 2 · 0,7pts</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-4" style="gap:12px">
+      <div class="card purple-border" style="padding:16px">
+        <div style="font-size:32px;margin-bottom:8px">📊</div>
+        <h3>Dashboard</h3>
+        <p style="margin-top:6px">Gráfico anual de vendas (Jan–Dez), cards de totais, visão geral dos últimos 30 dias. Exclusivo do DONO.</p>
+      </div>
+      <div class="card blue-border" style="padding:16px">
+        <div style="font-size:32px;margin-bottom:8px">🤝</div>
+        <h3>Clientes</h3>
+        <p style="margin-top:6px">Listar, buscar, cadastrar, editar e excluir. CPF validado como único. Histórico de vendas por cliente.</p>
+      </div>
+      <div class="card green-border" style="padding:16px">
+        <div style="font-size:32px;margin-bottom:8px">📦</div>
+        <h3>Produtos</h3>
+        <p style="margin-top:6px">CRUD completo. Alerta visual de estoque abaixo do mínimo. Upload de imagem. Preço dinâmico.</p>
+      </div>
+      <div class="card orange-border" style="padding:16px">
+        <div style="font-size:32px;margin-bottom:8px">🛒</div>
+        <h3>PDV</h3>
+        <p style="margin-top:6px">Grade de produtos com busca em tempo real, carrinho dinâmico, finalização com 4 formas de pagamento.</p>
+      </div>
+      <div class="card" style="padding:16px;border-color:rgba(6,182,212,0.3)">
+        <div style="font-size:32px;margin-bottom:8px">🧾</div>
+        <h3>Nota Fiscal</h3>
+        <p style="margin-top:6px">Listagem de vendas com filtro de data/cliente. Pop-up com cupom e botão imprimir (fundo branco forçado).</p>
+      </div>
+      <div class="card" style="padding:16px;border-color:rgba(251,191,36,0.3)">
+        <div style="font-size:32px;margin-bottom:8px">📈</div>
+        <h3>Relatórios</h3>
+        <p style="margin-top:6px">Total de vendas e valor faturado filtrado por período e cliente. Tabela detalhada por venda.</p>
+      </div>
+      <div class="card" style="padding:16px;border-color:rgba(168,85,247,0.3)">
+        <div style="font-size:32px;margin-bottom:8px">👥</div>
+        <h3>Equipe</h3>
+        <p style="margin-top:6px">Criar e listar funcionários, definir perfis DONO ou FUNCIONARIO, gerenciar credenciais.</p>
+      </div>
+      <div class="card" style="padding:16px;border-color:rgba(255,255,255,0.15)">
+        <div style="font-size:32px;margin-bottom:8px">⚙️</div>
+        <h3>Configurações</h3>
+        <p style="margin-top:6px">Nome da loja, CNPJ, mensagem do rodapé da nota e imposto padrão. Modelo Singleton.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 12: EMAIL ========== -->
+<div class="slide bg-main" id="slide-12">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(59,130,246,0.2)">📧</div>
+    <h2>Recuperação de Senha por E-mail</h2>
+    <span class="badge">Entrega 3 · 0,5pts</span>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;justify-content:center;gap:20px">
+    <div class="flow" style="justify-content:center;gap:8px">
+      <div class="flow-step" style="border-color:rgba(59,130,246,0.5)">
+        <div style="font-size:22px">🔑</div>
+        <div style="font-size:12px;font-weight:600">Esqueci a Senha</div>
+        <div style="font-size:10px;color:var(--text-muted)">Botão na tela de login</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(168,85,247,0.5)">
+        <div style="font-size:22px">📤</div>
+        <div style="font-size:12px;font-weight:600">POST /password-reset/</div>
+        <div style="font-size:10px;color:var(--text-muted)">Envia e-mail do usuário</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(34,197,94,0.5)">
+        <div style="font-size:22px">⚙️</div>
+        <div style="font-size:12px;font-weight:600">Django + SMTP</div>
+        <div style="font-size:10px;color:var(--text-muted)">Gera token único</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(249,115,22,0.5)">
+        <div style="font-size:22px">📬</div>
+        <div style="font-size:12px;font-weight:600">E-mail Enviado</div>
+        <div style="font-size:10px;color:var(--text-muted)">Link com token seguro</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:rgba(6,182,212,0.5)">
+        <div style="font-size:22px">🔒</div>
+        <div style="font-size:12px;font-weight:600">Nova Senha</div>
+        <div style="font-size:10px;color:var(--text-muted)">Confirma via link</div>
+      </div>
+    </div>
+    <div class="cards-grid cols-3">
+      <div class="card blue-border">
+        <h3>🔧 Implementação</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Endpoint POST <code>/api/auth/password-reset/</code></li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Gera token único via PasswordResetToken</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Token expira em 1 hora</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Confirmação via POST com novo password</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Configurado com Django Email Backend</li>
+        </ul>
+      </div>
+      <div class="card green-border">
+        <h3>🛡️ Segurança</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Token de uso único (delete após uso)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Não revela se e-mail existe (segurança)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Nova senha requer mínimo de 6 caracteres</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Confirmação de senha obrigatória</li>
+        </ul>
+      </div>
+      <div class="card orange-border">
+        <h3>📱 Interface</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Botão "Esqueci a senha" na tela de login</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Modal SweetAlert para inserir e-mail</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Redirecionamento para página de reset</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Feedback visual de sucesso/erro</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 13: REGRAS DE NEGÓCIO ========== -->
+<div class="slide bg-main" id="slide-13">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(34,197,94,0.2)">⚖️</div>
+    <h2>Regras de Negócio</h2>
+    <span class="badge">Entrega 3 · 0,5pts</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-2">
+      <div>
+        <h3 style="color:var(--purple-light);margin-bottom:12px;font-size:16px">📦 Estoque</h3>
+        <ul class="checklist">
+          <li><span class="ck">✓</span><div><div>Validação de estoque suficiente antes de confirmar venda</div><div class="desc">BusinessException com nome do produto sem estoque</div></div></li>
+          <li><span class="ck">✓</span><div><div>Desconto automático de estoque ao registrar venda</div><div class="desc">Lógica no VendaService, transação atômica</div></div></li>
+          <li><span class="ck">✓</span><div><div>Alerta visual de estoque mínimo na listagem</div><div class="desc">Badge "⚠️ Baixo Estoque" na interface</div></div></li>
+          <li><span class="ck">✓</span><div><div>Proibição de deletar produto com vendas vinculadas</div><div class="desc">ON DELETE RESTRICT + BusinessException</div></div></li>
+        </ul>
+        <h3 style="color:var(--purple-light);margin:16px 0 12px;font-size:16px">🤝 Clientes</h3>
+        <ul class="checklist">
+          <li><span class="ck">✓</span><div><div>CPF único obrigatório no cadastro</div><div class="desc">UNIQUE constraint no banco + erro amigável</div></div></li>
+          <li><span class="ck">✓</span><div><div>Proibição de excluir cliente com vendas</div><div class="desc">models.RESTRICT + BusinessException</div></div></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:var(--purple-light);margin-bottom:12px;font-size:16px">🛒 Vendas</h3>
+        <ul class="checklist">
+          <li><span class="ck">✓</span><div><div>Venda exige ao menos 1 item no carrinho</div><div class="desc">Validação no frontend e no serializer</div></div></li>
+          <li><span class="ck">✓</span><div><div>4 formas de pagamento disponíveis</div><div class="desc">PIX · Dinheiro · Crédito · Débito</div></div></li>
+          <li><span class="ck">✓</span><div><div>Valor total calculado automaticamente</div><div class="desc">Soma dos itens × quantidade no service</div></div></li>
+          <li><span class="ck">✓</span><div><div>Histórico completo de vendas por cliente</div><div class="desc">Filtros por data e cliente na API</div></div></li>
+        </ul>
+        <h3 style="color:var(--purple-light);margin:16px 0 12px;font-size:16px">🏪 Loja</h3>
+        <ul class="checklist">
+          <li><span class="ck">✓</span><div><div>ConfiguracaoLoja é um Singleton</div><div class="desc">Apenas 1 registro em toda a tabela</div></div></li>
+          <li><span class="ck">✓</span><div><div>Nome e CNPJ aparecem na Nota Fiscal</div><div class="desc">Dados buscados da configuração em tempo real</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 14: IDENTIDADE VISUAL ========== -->
+<div class="slide bg-main" id="slide-14">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(249,115,22,0.2)">🎨</div>
+    <h2>Identidade Visual</h2>
+    <span class="badge">Entrega 3 · 0,5pts</span>
+  </div>
+  <div class="slide-body" style="display:flex;gap:20px">
+    <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+      <div class="card purple-border">
+        <h3>🚀 Nome e Marca</h3>
+        <p style="margin-top:8px"><strong>AimSync SGC</strong> — "Aim" (mira / objetivo) + "Sync" (sincronizar). O nome transmite precisão e organização, como a meta de qualquer bom gestor comercial.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">🎨 Paleta de Cores</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="text-align:center">
+            <div style="width:50px;height:50px;border-radius:10px;background:#a855f7;margin:0 auto 4px"></div>
+            <div style="font-size:10px;color:var(--text-muted)">#a855f7<br>Primary</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:50px;height:50px;border-radius:10px;background:#7c3aed;margin:0 auto 4px"></div>
+            <div style="font-size:10px;color:var(--text-muted)">#7c3aed<br>Dark</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:50px;height:50px;border-radius:10px;background:#0f0f1a;border:1px solid rgba(255,255,255,0.1);margin:0 auto 4px"></div>
+            <div style="font-size:10px;color:var(--text-muted)">#0f0f1a<br>BG Dark</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:50px;height:50px;border-radius:10px;background:#f8fafc;border:1px solid rgba(0,0,0,0.1);margin:0 auto 4px"></div>
+            <div style="font-size:10px;color:var(--text-muted)">#f8fafc<br>BG Light</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:50px;height:50px;border-radius:10px;background:#22c55e;margin:0 auto 4px"></div>
+            <div style="font-size:10px;color:var(--text-muted)">#22c55e<br>Success</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:50px;height:50px;border-radius:10px;background:#ef4444;margin:0 auto 4px"></div>
+            <div style="font-size:10px;color:var(--text-muted)">#ef4444<br>Danger</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+      <div class="card blue-border">
+        <h3>🌓 Tema Duplo</h3>
+        <p style="margin-top:8px;font-size:13px">O sistema possui <strong>modo escuro</strong> (padrão, elegante com fundo #0f0f1a) e <strong>modo claro</strong>. O usuário alterna com um botão e a preferência é salva no localStorage.</p>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <span class="pill">🌙 Dark Mode (padrão)</span>
+          <span class="pill blue">☀️ Light Mode</span>
+        </div>
+      </div>
+      <div class="card green-border">
+        <h3>✍️ Tipografia e UX</h3>
+        <ul style="margin-top:10px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Fonte: <strong>Inter</strong> (Google Fonts) — moderna e legível</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">SweetAlert2 para pop-ups profissionais</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Sidebar fixa com navegação intuitiva</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Botões com feedback visual (hover/active)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">Cards com bordas glassmorphism</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 15: GITHUB ========== -->
+<div class="slide bg-main" id="slide-15">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(255,255,255,0.1)">🐙</div>
+    <h2>Versionamento no GitHub</h2>
+    <span class="badge">Entrega 1+2 · 0,5+0,5pts</span>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:16px">
+    <div class="cards-grid cols-3">
+      <div class="card green-border" style="text-align:center">
+        <div class="stat">30+</div>
+        <div style="color:var(--text-muted);font-size:13px;margin-top:4px">Commits realizados</div>
+        <div class="pbar"><div class="pbar-fill" style="width:90%"></div></div>
+      </div>
+      <div class="card purple-border" style="text-align:center">
+        <div class="stat">main</div>
+        <div style="color:var(--text-muted);font-size:13px;margin-top:4px">Branch principal</div>
+        <div class="pbar"><div class="pbar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="card blue-border" style="text-align:center">
+        <div class="stat">📄</div>
+        <div style="color:var(--text-muted);font-size:13px;margin-top:4px">README + Docs completos</div>
+        <div class="pbar"><div class="pbar-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">📝 Exemplos de Mensagens de Commit</h3>
+      <div class="code-block">
+<span class="cm">feat(auth):    Implementa JWT e login com perfil</span>
+<span class="cm">feat(pdv):     Otimiza renderização com cache de cards</span>
+<span class="cm">fix(perf):     Resolve N+1 queries no backend Django</span>
+<span class="cm">fix(print):    Corrige tela branca ao imprimir nota fiscal</span>
+<span class="cm">feat(sidebar): Restaura logo para funcionarios</span>
+<span class="cm">docs:          Adiciona DOCUMENTACAO_ACADEMICA.md e SQL</span>
+<span class="cm">style:         Aplica tema escuro como padrão do sistema</span></div>
+    </div>
+    <div class="cards-grid cols-2">
+      <div class="card orange-border">
+        <h3>📁 Estrutura do Repositório</h3>
+        <div class="code-block" style="margin-top:10px;font-size:11px">
+aimsync-sgc/
+├── backend/
+│   ├── core/
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── services.py
+│   │   └── serializers.py
+│   └── aimsync/
+│       └── urls.py
+├── frontend/
+│   ├── js/    css/    img/
+│   └── *.html
+├── docs/
+│   ├── DOCUMENTACAO_ACADEMICA.md
+│   └── script_banco_dados.sql
+└── vercel.json</div>
+      </div>
+      <div class="card">
+        <h3>🔗 Repositório</h3>
+        <p style="margin-top:10px;font-size:14px">
+          <span style="color:var(--purple-light)">github.com/</span><strong>Guizzin00/aimsync-sgc</strong>
+        </p>
+        <ul style="margin-top:12px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ README com instruções de execução</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Histórico coerente e organizado</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Arquivos de configuração (vercel.json, requirements.txt)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Documentação na pasta /docs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 16: DOCUMENTAÇÃO ========== -->
+<div class="slide bg-main" id="slide-16">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(6,182,212,0.2)">📚</div>
+    <h2>Documentação</h2>
+    <span class="badge">Entrega 3 · 0,4pts</span>
+  </div>
+  <div class="slide-body">
+    <div class="cards-grid cols-2" style="gap:16px">
+      <div class="card purple-border">
+        <h3>📄 DOCUMENTACAO_ACADEMICA.md</h3>
+        <ul style="margin-top:12px">
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Diagrama de Domínio (entidades e relacionamentos)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Diagrama de Classes (com atributos e métodos)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Diagrama Lógico do Banco de Dados (DDL SQL)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Casos de Uso (descrição detalhada de cada UC)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Manual do Usuário (passo a passo com telas)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:4px 0">✓ Requisitos Funcionais e Não Funcionais</li>
+        </ul>
+      </div>
+      <div class="card blue-border">
+        <h3>🗃️ script_banco_dados.sql</h3>
+        <p style="margin-top:8px;font-size:13px;color:var(--text-muted)">Script DDL completo para criação do banco do zero com todas as tabelas, constraints, chaves primárias e estrangeiras.</p>
+        <div style="margin-top:12px">
+          <span class="pill">CREATE TABLE</span>
+          <span class="pill blue">PRIMARY KEY</span>
+          <span class="pill green">FOREIGN KEY</span>
+          <span class="pill orange">ON DELETE</span>
+        </div>
+      </div>
+      <div class="card green-border">
+        <h3>📖 README.md</h3>
+        <ul style="margin-top:8px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Descrição do projeto e tecnologias</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Instruções completas de instalação local</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Link para o deploy em produção (Vercel)</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">✓ Variáveis de ambiente necessárias</li>
+        </ul>
+      </div>
+      <div class="card orange-border">
+        <h3>🔬 Casos de Uso Cobertos</h3>
+        <ul style="margin-top:8px">
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">UC01 – Autenticar no Sistema</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">UC02 – Gerenciar Clientes</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">UC03 – Gerenciar Produtos</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">UC04 – Realizar Venda</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">UC05 – Emitir Nota Fiscal</li>
+          <li style="font-size:13px;color:var(--text-muted);padding:3px 0">UC06 – Gerar Relatório</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 17: INFRA ========== -->
+<div class="slide bg-main" id="slide-17">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(34,197,94,0.2)">☁️</div>
+    <h2>Infraestrutura e Deploy</h2>
+    <span class="badge">Produção</span>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;justify-content:center;gap:20px">
+    <div class="cards-grid cols-3">
+      <div class="card blue-border" style="text-align:center;padding:24px">
+        <div style="font-size:40px;margin-bottom:12px">▲</div>
+        <h3>Vercel</h3>
+        <p style="margin-top:8px">Frontend estático + Backend Python (Serverless)</p>
+        <div style="margin-top:12px">
+          <span class="pill blue">HTTPS automático</span>
+          <span class="pill blue">CI/CD via GitHub</span>
+        </div>
+      </div>
+      <div class="card green-border" style="text-align:center;padding:24px">
+        <div style="font-size:40px;margin-bottom:12px">🦋</div>
+        <h3>Supabase</h3>
+        <p style="margin-top:8px">PostgreSQL gerenciado na nuvem com conexão segura SSL</p>
+        <div style="margin-top:12px">
+          <span class="pill green">PostgreSQL 15</span>
+          <span class="pill green">SSL/TLS</span>
+        </div>
+      </div>
+      <div class="card purple-border" style="text-align:center;padding:24px">
+        <div style="font-size:40px;margin-bottom:12px">📧</div>
+        <h3>SMTP Email</h3>
+        <p style="margin-top:8px">Envio de e-mail para recuperação de senha configurado no Django</p>
+        <div style="margin-top:12px">
+          <span class="pill">Django SMTP</span>
+          <span class="pill">Tokens seguros</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(168,85,247,0.3)">
+      <div style="display:flex;gap:30px;align-items:center;justify-content:center">
+        <div style="text-align:center">
+          <div style="font-size:28px">🐍</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Python 3.11</div>
+        </div>
+        <div style="font-size:20px;color:var(--purple)">+</div>
+        <div style="text-align:center">
+          <div style="font-size:28px">🎸</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Django 5.x</div>
+        </div>
+        <div style="font-size:20px;color:var(--purple)">+</div>
+        <div style="text-align:center">
+          <div style="font-size:28px">🌐</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">DRF 3.x</div>
+        </div>
+        <div style="font-size:20px;color:var(--purple)">+</div>
+        <div style="text-align:center">
+          <div style="font-size:28px">🔐</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">simplejwt</div>
+        </div>
+        <div style="font-size:20px;color:var(--purple)">+</div>
+        <div style="text-align:center">
+          <div style="font-size:28px">📊</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Chart.js</div>
+        </div>
+        <div style="font-size:20px;color:var(--purple)">+</div>
+        <div style="text-align:center">
+          <div style="font-size:28px">🍫</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">SweetAlert2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 18: AVALIAÇÃO FINAL ========== -->
+<div class="slide bg-main" id="slide-18">
+  <div class="slide-header">
+    <div class="icon" style="background:rgba(168,85,247,0.2)">🏆</div>
+    <h2>Critérios de Avaliação</h2>
+    <span class="badge">Pontuação Total</span>
+  </div>
+  <div class="slide-body" style="display:flex;gap:16px">
+    <div style="flex:2">
+      <table class="criteria-table">
+        <thead>
+          <tr>
+            <th>Critério</th>
+            <th>Status</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Compreensão do problema e contexto real</td><td><span class="check">✓</span> Loja de Informática</td><td class="pts">0,5</td></tr>
+          <tr><td>Requisitos funcionais e não funcionais</td><td><span class="check">✓</span> 8 RF + 8 RNF</td><td class="pts">0,5</td></tr>
+          <tr><td>Diagrama de Domínio</td><td><span class="check">✓</span> 5 entidades mapeadas</td><td class="pts">0,5</td></tr>
+          <tr><td>Diagrama de Classes</td><td><span class="check">✓</span> 6 classes com métodos</td><td class="pts">0,5</td></tr>
+          <tr><td>Diagrama lógico do banco</td><td><span class="check">✓</span> DDL + FK + PK</td><td class="pts">0,5</td></tr>
+          <tr><td>GitHub — Repositório e README</td><td><span class="check">✓</span> 30+ commits</td><td class="pts">0,5</td></tr>
+          <tr><td>Integração com banco de dados</td><td><span class="check">✓</span> PostgreSQL via ORM</td><td class="pts">0,6</td></tr>
+          <tr><td>Navegabilidade das Telas</td><td><span class="check">✓</span> 8 telas interligadas</td><td class="pts">0,7</td></tr>
+          <tr><td>Tratamento de exceções</td><td><span class="check">✓</span> BusinessException global</td><td class="pts">0,6</td></tr>
+          <tr><td>Organização e legibilidade</td><td><span class="check">✓</span> Camadas + padrões</td><td class="pts">0,6</td></tr>
+          <tr><td>Interface + API REST integrada</td><td><span class="check">✓</span> JWT + 12 endpoints</td><td class="pts">0,6</td></tr>
+          <tr><td>Recuperação de senha por e-mail</td><td><span class="check">✓</span> SMTP + token</td><td class="pts">0,5</td></tr>
+          <tr><td>Regras de negócio implementadas</td><td><span class="check">✓</span> Estoque + RESTRICT</td><td class="pts">0,5</td></tr>
+          <tr><td>Funcionamento geral sem erros</td><td><span class="check">✓</span> Deploy em produção</td><td class="pts">0,5</td></tr>
+          <tr><td>Documentação final</td><td><span class="check">✓</span> docs/ + README</td><td class="pts">0,4</td></tr>
+          <tr><td>Identidade Visual</td><td><span class="check">✓</span> AimSync + tema próprio</td><td class="pts">0,5</td></tr>
+          <tr><td>Entrega + Apresentação</td><td><span class="check">✓</span> Sistema em produção</td><td class="pts">1,0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px;justify-content:center">
+      <div class="score-box">
+        <div class="total">10,0</div>
+        <div class="label">Pontuação máxima possível</div>
+      </div>
+      <div class="card green-border" style="text-align:center;padding:16px">
+        <div style="font-size:28px">🎯</div>
+        <h3 style="margin-top:8px">100% Critérios Cobertos</h3>
+        <p style="margin-top:6px">Todos os 17 critérios de avaliação foram implementados e verificados em produção.</p>
+      </div>
+      <div class="card" style="text-align:center;padding:12px">
+        <div style="font-size:12px;color:var(--text-muted)">🌐 Sistema em Produção</div>
+        <div style="font-size:13px;color:var(--purple-light);margin-top:4px;font-weight:600">aimsync-sgc.vercel.app</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button onclick="prevSlide()" title="Anterior">◀</button>
+  <span class="slide-count" id="slideCount">1 / 18</span>
+  <button onclick="nextSlide()" title="Próximo">▶</button>
+</div>
+
+<script>
+  const totalSlides = 18;
+  let current = 1;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    document.getElementById('slideCount').textContent = n + ' / ' + totalSlides;
+    document.getElementById('slideIndicator').textContent = n + ' / ' + totalSlides;
+    current = n;
+  }
+
+  function nextSlide() {
+    if (current < totalSlides) showSlide(current + 1);
+  }
+
+  function prevSlide() {
+    if (current > 1) showSlide(current - 1);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  showSlide(1);
+</script>
+</body>
+</html>
