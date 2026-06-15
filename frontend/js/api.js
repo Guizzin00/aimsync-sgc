@@ -163,8 +163,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const perfil = localStorage.getItem('perfil');
   
   // Bloqueio de URL (Redirecionamento)
-  if (window.location.pathname.includes('relatorios.html') && perfil !== 'DONO') {
-    window.location.replace('dashboard.html');
+  const isFuncionario = perfil !== 'DONO';
+  const blockedPages = ['relatorios.html', 'dashboard.html', 'equipe.html', 'configuracoes.html'];
+  
+  if (isFuncionario && blockedPages.some(page => window.location.pathname.includes(page))) {
+    window.location.replace('vendas.html');
+  }
+
+  // Ocultar elementos exclusivos do DONO via CSS
+  if (isFuncionario) {
+    const style = document.createElement('style');
+    style.textContent = `
+      [data-admin-only] { display: none !important; }
+    `;
+    document.head.appendChild(style);
   }
 });
 

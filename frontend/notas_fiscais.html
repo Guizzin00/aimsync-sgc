@@ -70,21 +70,21 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+        <a href="dashboard.html" style="text-decoration: none; color: inherit;" data-admin-only>
             <div class="sidebar-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 24px; cursor: pointer;">
                 <img src="img/logo_dark.jpg" alt="Logo" class="logo-img" style="width: 40px; height: 40px; border-radius: 50%;">
                 <span>AimSync</span>
             </div>
         </a>
         <ul class="nav-links">
-            <li><a href="dashboard.html">📊 Dashboard</a></li>
+            <li><a href="dashboard.html" data-admin-only>📊 Dashboard</a></li>
             <li><a href="clientes.html">🤝 Clientes</a></li>
             <li><a href="produtos.html">📦 Produtos / Estoque</a></li>
             <li><a href="vendas.html">🛒 Ponto de Venda</a></li>
-            <li data-admin-only><a href="relatorios.html">📈 Relatório de Vendas</a></li>
+            <li data-admin-only><a href="relatorios.html" data-admin-only>📈 Relatório de Vendas</a></li>
             <li><a href="notas_fiscais.html" class="active">🧾 Nota Fiscal</a></li>
-            <li data-admin-only><a href="equipe.html">👥 Equipe / Usuários</a></li>
-            <li data-admin-only><a href="configuracoes.html">⚙️ Configurações</a></li>
+            <li data-admin-only><a href="equipe.html" data-admin-only>👥 Equipe / Usuários</a></li>
+            <li data-admin-only><a href="configuracoes.html" data-admin-only>⚙️ Configurações</a></li>
         </ul>
         <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 8px;">
             <button onclick="toggleTheme()" class="btn btn-outline" style="width: 100%;">🌓 Alternar Tema</button>

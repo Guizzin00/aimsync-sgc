@@ -33,8 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.perfil) localStorage.setItem('perfil', data.perfil);
             if (data.username) localStorage.setItem('username', data.username);
             
-            // Redirect
-            window.location.href = 'dashboard.html';
+            // Redirect based on role
+            if (data.perfil === 'FUNCIONARIO') {
+                window.location.href = 'vendas.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
         } catch (error) {
         if (error.message === 'SILENT_ERROR') return;
             showAlert('Usuário ou senha incorretos.');
