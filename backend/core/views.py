@@ -77,7 +77,7 @@ class VendaViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Li
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Venda.objects.all().order_by('-data')
+        queryset = Venda.objects.select_related('cliente', 'usuario').prefetch_related('itens', 'itens__produto').order_by('-data')
         data_inicio = self.request.query_params.get('data_inicio')
         data_fim = self.request.query_params.get('data_fim')
         cliente_id = self.request.query_params.get('cliente_id')
@@ -121,7 +121,7 @@ def relatorio_vendas(request):
     data_fim = request.query_params.get('data_fim')
     cliente_id = request.query_params.get('cliente_id')
 
-    vendas = Venda.objects.all()
+    vendas = Venda.objects.select_related('cliente', 'usuario').prefetch_related('itens', 'itens__produto').all()
     if data_inicio:
         vendas = vendas.filter(data__date__gte=data_inicio)
     if data_fim:
