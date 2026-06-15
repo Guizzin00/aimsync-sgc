@@ -43,17 +43,26 @@
         }
 
         @media print {
-            body * {
-                visibility: hidden;
+            body {
+                background: white !important;
+                color: black !important;
+                margin: 0;
+                padding: 0;
             }
-            #swal2-html-container, #swal2-html-container * {
-                visibility: visible;
+            .nota-fiscal-container, .nota-fiscal-container * {
+                visibility: visible !important;
             }
-            #swal2-html-container {
+            .nota-fiscal-container {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
+                background: white !important;
+                color: black !important;
+            }
+            /* Ocultar o sweet alert se estiver visível no print */
+            .swal2-container {
+                display: none !important;
             }
         }
     </style>
