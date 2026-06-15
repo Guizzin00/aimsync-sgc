@@ -18,21 +18,23 @@ class ApiService {
     return headers;
   }
 
-  static async handleResponse(response) {
+  static async handleResponse(response, endpoint = '') {
     if (response.status === 401) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      if (typeof Swal !== 'undefined') {
-          Swal.fire({
-              title: 'Sessão Expirada',
-              text: 'Sua sessão expirou por segurança. Faça login novamente.',
-              icon: 'warning',
-              confirmButtonColor: '#a855f7'
-          }).then(() => window.location.href = 'index.html');
-      } else {
-          window.location.href = 'index.html';
+      if (!endpoint.includes('/auth/login/')) {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Sessão Expirada',
+                text: 'Sua sessão expirou por segurança. Faça login novamente.',
+                icon: 'warning',
+                confirmButtonColor: '#a855f7'
+            }).then(() => window.location.href = 'index.html');
+        } else {
+            window.location.href = 'index.html';
+        }
+        throw new Error('SILENT_ERROR');
       }
-      throw new Error('SILENT_ERROR');
     }
 
     if (response.status === 403 || response.status === 500) {
@@ -73,7 +75,7 @@ class ApiService {
       method: 'GET',
       headers: this.getHeaders(),
     });
-    return this.handleResponse(response);
+    return this.handleResponse(response, endpoint);
   }
 
   static async post(endpoint, body) {
@@ -82,7 +84,7 @@ class ApiService {
       headers: this.getHeaders(),
       body: JSON.stringify(body),
     });
-    return this.handleResponse(response);
+    return this.handleResponse(response, endpoint);
   }
 
   static async put(endpoint, body) {
@@ -91,7 +93,7 @@ class ApiService {
       headers: this.getHeaders(),
       body: JSON.stringify(body),
     });
-    return this.handleResponse(response);
+    return this.handleResponse(response, endpoint);
   }
 
   static async postFormData(endpoint, formData) {
@@ -105,7 +107,7 @@ class ApiService {
       headers: headers,
       body: formData,
     });
-    return this.handleResponse(response);
+    return this.handleResponse(response, endpoint);
   }
 
   static async putFormData(endpoint, formData) {
@@ -119,7 +121,7 @@ class ApiService {
       headers: headers,
       body: formData,
     });
-    return this.handleResponse(response);
+    return this.handleResponse(response, endpoint);
   }
 
   static async delete(endpoint) {
@@ -128,7 +130,7 @@ class ApiService {
       headers: this.getHeaders(),
     });
     if (response.status === 204) return null;
-    return this.handleResponse(response);
+    return this.handleResponse(response, endpoint);
   }
 }
 
