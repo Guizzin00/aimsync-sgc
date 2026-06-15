@@ -337,10 +337,7 @@ async function finalizarVenda(event) {
         btnFinalizar.textContent = 'Processando...';
         btnFinalizar.disabled = true;
 
-        // Simula processamento
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // Envia venda
+        // Envia venda instantaneamente
         await ApiService.post('/vendas/', payload);
 
         // Atualiza botão
