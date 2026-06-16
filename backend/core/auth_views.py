@@ -45,6 +45,9 @@ class PasswordResetRequestView(APIView):
                         <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 1px;">AimSync SGC</h1>
                     </div>
                     <div style="padding: 40px 30px; color: #1e293b;">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <img src="{settings.FRONTEND_URL}/img/reset-password-amico.svg" alt="Recuperação de Senha" style="max-width: 250px; height: auto; display: block; margin: 0 auto;">
+                        </div>
                         <h2 style="margin-top: 0; color: #0f172a; font-size: 22px;">Redefinição de Senha</h2>
                         <p style="font-size: 16px; line-height: 1.6;">Olá, <strong>{user.first_name or user.username}</strong>!</p>
                         <p style="font-size: 16px; line-height: 1.6; color: #475569;">Você solicitou a redefinição de senha para a sua conta no AimSync SGC. Clique no botão abaixo para criar uma nova senha de forma segura:</p>
@@ -127,6 +130,9 @@ class UserRegistrationView(APIView):
                             <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 1px;">AimSync SGC</h1>
                         </div>
                         <div style="padding: 40px 30px; color: #1e293b;">
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <img src="{settings.FRONTEND_URL}/img/auth-amico.svg" alt="Verificação de E-mail" style="max-width: 250px; height: auto; display: block; margin: 0 auto;">
+                            </div>
                             <h2 style="margin-top: 0; color: #0f172a; font-size: 22px;">Confirme seu E-mail</h2>
                             <p style="font-size: 16px; line-height: 1.6;">Olá, <strong>{user.username}</strong>!</p>
                             <p style="font-size: 16px; line-height: 1.6; color: #475569;">Bem-vindo ao AimSync SGC! Estamos quase lá. Para começar a usar sua conta com segurança, por favor, confirme seu endereço de e-mail clicando no botão abaixo:</p>
