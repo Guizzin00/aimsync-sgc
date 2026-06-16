@@ -37,6 +37,33 @@ class PasswordResetRequestView(APIView):
         
         email_body = f"Olá, {user.first_name or user.username}!\n\nVocê solicitou a redefinição de senha para o AimSync SGC.\n\nPor favor, copie e cole o link abaixo no seu navegador para criar uma nova senha:\n{reset_link}\n\nSe você não solicitou isso, pode ignorar este e-mail."
         
+        html_message = f"""
+        <html>
+            <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; margin: 0; padding: 40px 20px;">
+                <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                    <div style="background-color: #a855f7; padding: 30px 20px; text-align: center;">
+                        <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 1px;">AimSync SGC</h1>
+                    </div>
+                    <div style="padding: 40px 30px; color: #1e293b;">
+                        <h2 style="margin-top: 0; color: #0f172a; font-size: 22px;">Redefinição de Senha</h2>
+                        <p style="font-size: 16px; line-height: 1.6;">Olá, <strong>{user.first_name or user.username}</strong>!</p>
+                        <p style="font-size: 16px; line-height: 1.6; color: #475569;">Você solicitou a redefinição de senha para a sua conta no AimSync SGC. Clique no botão abaixo para criar uma nova senha de forma segura:</p>
+                        
+                        <div style="text-align: center; margin: 40px 0;">
+                            <a href="{reset_link}" style="background-color: #a855f7; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 6px rgba(168, 85, 247, 0.25);">Redefinir Minha Senha</a>
+                        </div>
+                        
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 8px;">Se o botão não funcionar, copie e cole o link abaixo no seu navegador:</p>
+                        <p style="font-size: 13px; color: #a855f7; word-break: break-all; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">{reset_link}</p>
+                        
+                        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+                        <p style="margin: 0; font-size: 14px; color: #94a3b8; text-align: center;">Se você não solicitou essa alteração, basta ignorar este e-mail. Nenhuma alteração será feita na sua conta.</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        """
+        
         try:
             send_mail(
                 subject='Redefinição de Senha - AimSync SGC',
@@ -44,6 +71,7 @@ class PasswordResetRequestView(APIView):
                 from_email='noreply@aimsync.com',
                 recipient_list=[user.email],
                 fail_silently=False,
+                html_message=html_message,
             )
         except Exception as e:
             return Response({'detail': f'Erro ao enviar e-mail: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -91,6 +119,33 @@ class UserRegistrationView(APIView):
             
             email_body = f"Olá, {user.username}!\n\nObrigado por se cadastrar no AimSync SGC.\n\nPor favor, confirme seu e-mail clicando no link abaixo:\n{verify_link}\n\nCaso não tenha sido você, ignore este e-mail."
             
+            html_message = f"""
+            <html>
+                <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; margin: 0; padding: 40px 20px;">
+                    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                        <div style="background-color: #a855f7; padding: 30px 20px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 1px;">AimSync SGC</h1>
+                        </div>
+                        <div style="padding: 40px 30px; color: #1e293b;">
+                            <h2 style="margin-top: 0; color: #0f172a; font-size: 22px;">Confirme seu E-mail</h2>
+                            <p style="font-size: 16px; line-height: 1.6;">Olá, <strong>{user.username}</strong>!</p>
+                            <p style="font-size: 16px; line-height: 1.6; color: #475569;">Bem-vindo ao AimSync SGC! Estamos quase lá. Para começar a usar sua conta com segurança, por favor, confirme seu endereço de e-mail clicando no botão abaixo:</p>
+                            
+                            <div style="text-align: center; margin: 40px 0;">
+                                <a href="{verify_link}" style="background-color: #a855f7; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 6px rgba(168, 85, 247, 0.25);">Confirmar Meu E-mail</a>
+                            </div>
+                            
+                            <p style="font-size: 14px; color: #64748b; margin-bottom: 8px;">Se o botão não funcionar, copie e cole o link abaixo no seu navegador:</p>
+                            <p style="font-size: 13px; color: #a855f7; word-break: break-all; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">{verify_link}</p>
+                            
+                            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+                            <p style="margin: 0; font-size: 14px; color: #94a3b8; text-align: center;">Caso você não tenha se cadastrado no AimSync, por favor, ignore este e-mail.</p>
+                        </div>
+                    </div>
+                </body>
+            </html>
+            """
+            
             try:
                 send_mail(
                     subject='Confirme seu E-mail - AimSync SGC',
@@ -98,6 +153,7 @@ class UserRegistrationView(APIView):
                     from_email='noreply@aimsync.com',
                     recipient_list=[user.email],
                     fail_silently=False,
+                    html_message=html_message,
                 )
                 return Response({'message': 'Usuário criado com sucesso. Verifique seu e-mail para ativar a conta.'}, status=status.HTTP_201_CREATED)
             except Exception as e:
