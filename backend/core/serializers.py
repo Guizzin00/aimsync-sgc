@@ -2,8 +2,25 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Usuario, Cliente, Produto, Venda, ItemVenda, ConfiguracaoLoja
 
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
+        username_or_email = attrs.get('username')
+        password = attrs.get('password')
+
+        if username_or_email and password:
+            User = get_user_model()
+            try:
+                user = User.objects.get(
+                    Q(username=username_or_email) | Q(email=username_or_email)
+                )
+                # Se achou pelo e-mail, substitui pelo username real para o JWT validar corretamente
+                attrs['username'] = user.username
+            except User.DoesNotExist:
+                pass
+
         data = super().validate(attrs)
         data['perfil'] = self.user.perfil
         data['username'] = self.user.username
