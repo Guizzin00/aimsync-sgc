@@ -635,64 +635,63 @@ tr:hover td {
     margin-bottom: 16px;
   }
 
-  /* PDV: produtos em cima, carrinho embaixo */
+  /* PDV: produtos em cima, carrinho embaixo, sem scroll duplo */
   .pdv-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     height: auto;
-    gap: 16px;
+    gap: 24px;
   }
 
   .products-section {
     overflow-y: visible;
     padding-right: 0;
-    max-height: 60vh;
-    overflow-y: auto;
+    max-height: none;
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .product-card {
-    height: 160px;
+    height: 180px;
   }
 
   .cart-section {
     border-left: none;
     border-top: 1px solid var(--border-color);
     height: auto;
-    max-height: 60vh;
+    max-height: none;
+    margin-top: 16px;
   }
 
-  /* Filtros empilham */
+  /* Filtros empilham melhor */
   .filter-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .filter-grid > .form-group:nth-child(3) {
-    grid-column: 1 / -1;
-  }
-
+  .filter-grid > .form-group:nth-child(3),
   .filter-grid > button {
-    grid-column: 1 / -1;
+    grid-column: 1;
   }
 
-  /* Tabelas: scroll horizontal */
+  /* Tabelas: scroll horizontal otimizado e visual mais leve */
   .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
   }
 
   table {
-    min-width: 500px;
+    min-width: 600px; /* Garante que não quebre linhas de forma feia */
   }
 
   th, td {
-    padding: 10px 12px;
+    padding: 12px;
     font-size: 0.85rem;
+    white-space: nowrap; /* Evita textos empilhados na célula */
   }
 
   /* Cards */
@@ -731,14 +730,6 @@ tr:hover td {
 
 @media (max-width: 480px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .filter-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .filter-grid > .form-group:nth-child(3) {
-    grid-column: 1;
+    grid-template-columns: 1fr; /* Produtos em 1 coluna se for muito pequeno */
   }
 }
