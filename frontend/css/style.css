@@ -395,9 +395,6 @@ tr:hover td {
 }
 
 /* ===================== LOGO ===================== */
-.logo-img {
-  mix-blend-mode: screen;
-}
 
 /* ===================== PDV (PONTO DE VENDA) ===================== */
 .pdv-layout {
