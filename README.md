@@ -77,3 +77,4 @@ Você pode utilizar o Postman ou o Insomnia para interagir com a API:
 
 ## Equipe
 - Guilherme Oliveira
+- Rodrigo Pepato
